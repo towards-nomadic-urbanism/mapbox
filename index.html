@@ -1,0 +1,2952 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Mapbox Project</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.js"></script>
+    <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.css" rel="stylesheet"/>
+    <script src="./bootstrap.js"></script>
+    <link href="./bootstrap.css" rel="stylesheet"/>
+    <script src="jquery-3.6.0.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant&display=swap" rel="stylesheet"/>
+    <link href="./mapstyles.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ==" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js" integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ==" crossorigin=""></script>
+  </head>
+  <script>
+
+    var forms = [
+      'Gagon_Addicts',
+      'Gagon_Women',
+      'Transition Apartment',
+      "Hygiene Center",
+      "The Platform",
+      "Issa",
+      "Dirty Burger",
+      "Synagogue Beit El",
+      "Mati",
+      "Natan",
+      "Dizengoff  Square",
+      "Yechezkel",
+      "Pasta Basta",
+      "dizengoff Bottles",
+      "market",
+      "Adam",
+      "Eyal",
+      "Amir",
+      "York",
+      "Yelena",
+      "Maor",
+      "Muhammad",
+      "Michael",
+      "White Pitbull",
+      "Tzipi",
+      "Ilan",
+      "Shiloh",
+      "Rotem",
+      "Eyal_D",
+      "Sandra",
+      "Allocations_all",
+      "Magen_David_all",
+      "Food_Point_all",
+      "Medical_Treatment_all",
+      "Refreshment_all",
+      "only_text"
+    ];
+
+    var formIdx = {
+      '"Lasova"_Gagon_Addicts': 0,
+      '"Lasova"_Gagon_Women': 1,
+      '"Lasova"_Transition Apartment': 2,
+      "Hygiene Center": 3,
+      "The Platform": 4,
+      "Issa": 5,
+      "Dirty Burger": 6,
+      "Synagogue Beit El": 7,
+      "Mati": 8,
+      "Natan": 9,
+      "Dizengoff  Square": 10,
+      "Yechezkel": 11,
+      "Pasta Basta": 12,
+      "dizengoff Bottles": 13,
+      "market": 14,
+      "Adam": 15,
+      "Eyal": 16,
+      "Amir": 17,
+      "York": 18,
+      "Yelena": 19,
+      "Maor": 20,
+      "Muhammad": 21,
+      "Michael": 22,
+      "White Pitbull": 23,
+      "Tzipi": 24,
+      "Ilan": 25,
+      "Shiloh": 26,
+      "Rotem": 27,
+      "Eyal_D": 28,
+      "Sandra": 29,
+      "Allocations_all": 30,
+      "Magen_David_all": 31,
+      "Food_Point_all": 32,
+      "Medical_Treatment_all": 33,
+      "Refreshment_all": 34,
+      "only_text": 35
+    }
+
+    var sources = {
+      "Dizengoff  Square_in": "Dizengoff Section.pdf",
+      "Dizengoff  Square_in2": "Zoom-in Section.pdf"
+    }
+        
+    var layers = [];
+    function openForm(idx) {
+      for (i = 0; i < forms.length; i++) {
+        if (i == idx) {
+          document.getElementById(forms[i]).style.display = "block";
+        }
+        else {
+          document.getElementById(forms[i]).style.display = "none";
+        }
+      }
+    }
+
+    function openImage(id) {
+      document.getElementById(id).style.display = "block";
+      closeForm();
+    }
+
+    function openRouteImage(id) {
+      document.getElementById(id).style.display = "block";
+    }
+
+    function closeImage(id1, id2) {
+      document.getElementById(id1).style.display = "none";
+      openForm(formIdx[id2]);
+    }
+
+    function closeForm(elemId="") {
+      for (i = 0; i < forms.length; i++)
+      {
+        document.getElementById(forms[i]).style.display = "none";
+      }
+      if (elemId != "") {
+        var elem = document.getElementById(elemId);
+        if (elem != null) {
+          var iframe = elem.querySelector('iframe');
+          var audio = elem.querySelector('audio');
+          if ( iframe !== null ) {
+            var iframeSrc = iframe.src;
+            iframe.src = iframeSrc;
+          }
+          if (audio !== null) {
+            audio.pause();
+          }
+        }
+      }
+      
+    }
+
+    var relIdx = 0;
+    function changeSource(id1, id2) {
+      // console.log('onchange: ' + id1 + ', ' + id2);
+      document.getElementById(id2).style.display = "block";
+      document.getElementById(id1).style.display = "none";
+    }
+
+    function accordionClick() {
+      var vis = map.getLayer('3D').visibility;
+      var isChecked = false;
+      if (vis == 'visible')
+        isChecked = true;
+      for (i = 0; i < collapseOne.children.length; i++) {
+        if (collapseOne.children[i].innerText == '3D') {
+          collapseOne.children[i].children[0].checked = isChecked;
+        }
+      }
+    }
+
+    var individual_layers = [
+      '3D',
+      'city-border',
+      'light-rail',
+      'metro',
+      'kibbutz-nadavot',
+      'collecting-bottles', 
+      'drug-deals',
+      'formal',
+      'stay-points-exist',
+      'green areas and parks',
+      'food-exist',
+      'stay-points-exist',
+      'green areas and parks',
+      'שהייה_',
+      'עבודה_',
+      'squares'
+    ];
+
+    var titlesHebrew = {
+      'מחקר': 'research',
+      'תכנון': 'planning'
+    }
+
+    var researchOn = true;
+    var planningOn = false;
+
+    function setLayerVis(current_layer, e) {
+      const clickedLayer = current_layer.textContent;
+      if (e != null) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      
+      const visibility = map.getLayoutProperty(
+        clickedLayer,
+        'visibility'
+      );
+      if (visibility == 'visible' && current_layer.checked == false) {
+          map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+          this.className = '';
+      } else {
+        this.className = 'active';
+        map.setLayoutProperty(
+          clickedLayer,
+          'visibility',
+          'visible'
+        );
+      }
+    }
+
+
+    function clickTitle(titleName) {
+      // var mainTitle = document.getElementById('main_title').children[0];
+      var secondaryTitle = document.getElementById('secondary_title');
+      // var lowerText = document.getElementById('lower_text').children[0];
+      // var instructionTitle= document.getElementById('instruction');
+      var accordionDiv = document.getElementById(titlesHebrew[titleName]);
+      var clickedItem = document.getElementById(titleName);
+      if (titleName == "מחקר") {
+        researchOn = !researchOn;
+        if (!planningOn) {
+          titles_text['main_title'][''] = 'כלי לקריאה מחודשת של תל-אביב מעיניהם של דרי הרחוב';
+          titles_text['main_title']['_en'] = 'A tool for re-reading Tel Aviv through the eyes of the homeless';
+          // mainTitle.innerHTML = 'כלי לקריאה מחודשת של תל-אביב מעיניהם של דרי הרחוב';
+          secondaryTitle.style.display = 'block';
+          titles_text['lower_text'][''] = 'המחקר מבוסס על 19 סיפורים אישיים של דרי ודרות רחוב בעיר תל אביב, אשר על מנת להתקיים ולענות על צרכיהם הבסיסיים, נשענים על משאבים בעיר באופן סמוי. אלו, מוצגים לצד שכבות מידע של העיר שנבחנו בהתייחסות לסוגיית דרות הרחוב.';
+          titles_text['lower_text']['_en'] = 'The research is based on 19 personal stories of homeless men and women in the city of Tel Aviv, who, in order to survive and meet their basic needs, rely on resources in the city covertly. These are presented next to information layers of the city that were examined in reference to the issue of street dwellings.';
+          // lowerText.innerHTML = 'המחקר מבוסס על 19 סיפורים אישיים של דרי ודרות רחוב בעיר תל אביב, אשר על מנת להתקיים ולענות על צרכיהם הבסיסיים, נשענים על משאבים בעיר באופן סמוי. אלו, מוצגים לצד שכבות מידע של העיר שנבחנו בהתייחסות לסוגיית דרות הרחוב.';
+          // instructionTitle.style.display = 'none';
+        }
+      }
+      else if (titleName == "תכנון") {
+        planningOn = !planningOn;
+        titles_text['main_title'][''] = 'פריסת מוקדים עירונית המאפשרת קיום חיים בסטטוס המעבר';
+        titles_text['main_title']['_en'] = 'An urban focal point layout that enables life in a transitory status';
+        // mainTitle.innerHTML = 'פריסת מוקדים עירונית המאפשרת קיום חיים בסטטוס המעבר';
+        secondaryTitle.style.display = 'none';
+        titles_text['lower_text'][''] = 'התכנית העירונית פורסת רשת של מוקדים הפועלים יחד על מנת לאפשר קיום עירוני מגוון והבטחה של חיים בכבוד, גם ללא בית קבוע, ובעצם להיות בבית בעיר. הרשת מורכבת ממענה לצרכים בסיסיים ומאפשרת למשתמשים בה אפשרויות בחירה רבות.';
+        titles_text['lower_text']['_en'] = 'The urban plan lays out a network of centers that work together to enable a diverse urban existence and guarantee a life with dignity, even without a permanent home, and basically to be at home in the city. The network responds to basic needs and allows its users many choices.';
+        // lowerText.innerHTML = 'התכנית העירונית פורסת רשת של מוקדים הפועלים יחד על מנת לאפשר קיום עירוני מגוון והבטחה של חיים בכבוד, גם ללא בית קבוע, ובעצם להיות בבית בעיר. הרשת מורכבת ממענה לצרכים בסיסיים ומאפשרת למשתמשים בה אפשרויות בחירה רבות.';
+        // instructionTitle.style.display = 'block';
+        var vis = true;
+        if (!planningOn && !researchOn) {
+          vis = false;
+        }
+        if (!planningOn && researchOn) {
+          titles_text['main_title'][''] = 'כלי לקריאה מחודשת של תל-אביב מעיניהם של דרי הרחוב';
+          titles_text['main_title']['_en'] = 'A tool for re-reading Tel Aviv through the eyes of the homeless';
+          // mainTitle.innerHTML = 'כלי לקריאה מחודשת של תל-אביב מעיניהם של דרי הרחוב';
+          secondaryTitle.style.display = 'block';
+          titles_text['lower_text'][''] = 'המחקר מבוסס על 19 סיפורים אישיים של דרי ודרות רחוב בעיר תל אביב, אשר על מנת להתקיים ולענות על צרכיהם הבסיסיים, נשענים על משאבים בעיר באופן סמוי. אלו, מוצגים לצד שכבות מידע של העיר שנבחנו בהתייחסות לסוגיית דרות הרחוב.';
+          titles_text['lower_text']['_en'] = 'The research is based on 19 personal stories of homeless men and women in the city of Tel Aviv, who, in order to survive and meet their basic needs, rely on resources in the city covertly. These are presented next to information layers of the city that were examined in reference to the issue of street dwellings.';
+          // lowerText.innerHTML = 'המחקר מבוסס על 19 סיפורים אישיים של דרי ודרות רחוב בעיר תל אביב, אשר על מנת להתקיים ולענות על צרכיהם הבסיסיים, נשענים על משאבים בעיר באופן סמוי. אלו, מוצגים לצד שכבות מידע של העיר שנבחנו בהתייחסות לסוגיית דרות הרחוב.';
+          // instructionTitle.style.display = 'none';
+        }
+        
+        for (i = 0; i < research.children.length; i++) {
+          var current_line = research.children[i];
+          
+          if (current_line.id.startsWith('accordion')) {
+            var subTitleCheckBox = current_line.children[0].children[0].children[0].children[0];
+            subTitleCheckBox.checked = vis;
+            var current_subtitle = current_line.children[0].children[1];
+            for (j = 0; j < current_subtitle.children.length; j++){
+              const current_layer = current_subtitle.children[j].children[0];
+              if (individual_layers.includes(current_layer.id)) {
+                current_layer.checked = vis;
+                if (current_layer.id.endsWith("_" + titleName))
+                  continue;
+                setLayerVis(current_layer, null);
+              }
+            }
+          }
+          else {
+            const current_layer = current_line.children[0];
+          
+            if (individual_layers.includes(current_layer.id)) {
+              current_layer.checked = vis;
+              if (current_layer.id.endsWith("_" + titleName))
+                continue;
+              setLayerVis(current_layer, null);
+            }
+          }
+          
+        }
+        if (planningOn && researchOn) {
+          var research_box = document.getElementById("מחקר");
+          research_box.checked = false;
+          var evt = document.createEvent("HTMLEvents");
+          evt.initEvent("change", false, true);
+          research_box.dispatchEvent(evt);
+        }
+      }
+      setLanguage(false);
+      for (i = 0; i < accordionDiv.children.length; i++)
+      {
+        var current_line = accordionDiv.children[i];
+        if (current_line.id.startsWith('accordion')) {
+          var subTitleCheckBox = current_line.children[0].children[0].children[0].children[0];
+          if (!individual_layers.includes(subTitleCheckBox.id))
+            subTitleCheckBox.checked = clickedItem.checked;
+          var current_subtitle = current_line.children[0].children[1];
+          for (j = 0; j < current_subtitle.children.length; j++){
+            const current_layer = current_subtitle.children[j].children[0];
+            if (current_layer.id == "3D")
+              continue;
+            if (clickedItem.checked == false) {
+              if (!individual_layers.includes(current_layer.id) || (!researchOn && !planningOn))
+                current_layer.checked = false;
+            } else {
+              if (!individual_layers.includes(current_layer.id) || (researchOn || planningOn))
+                current_layer.checked = true;
+            }
+            setLayerVis(current_layer, null);
+          }
+        }
+        else {
+          const current_layer = current_line.children[0];
+        
+          if (current_layer.id == "3D")
+              continue;
+          if (clickedItem.checked == false) {
+            if (!individual_layers.includes(current_layer.id) || (!researchOn && !planningOn))
+              current_layer.checked = false;
+          } else {
+            if (!individual_layers.includes(current_layer.id) || (researchOn || planningOn))
+              current_layer.checked = true;
+          }
+          setLayerVis(current_layer, null);
+        }
+      }
+    }
+
+
+  </script>
+  <div class="map-title">
+    <div id="main_title" style="text-align: center;">
+      <h1 style="padding-top: 5px; padding-right: 8px; padding-left: 8px; text-align: center;">כלי לקריאה מחודשת של תל-אביב מעיניהם של דרי הרחוב</h1>
+    </div>
+  </div>
+  <div class="secondary-title-right" id="secondary_title">
+    <p style="padding-right: 2px; padding-left: 2px;">לחץ על הנקודות הצהובות להכרת הסיפורים האישיים
+      לחץ על הנקודות האדומות בכיכר דיזינגוף \ שוק הכרמל להעמקת מקטע אזורי</p>
+  </div>
+  <div class="lower-text" id="lower_text" style="display: none;">
+    <p style="padding-right: 2px; padding-left: 2px;">המחקר מבוסס על 19 סיפורים אישיים של דרי ודרות רחוב בעיר תל אביב, אשר על מנת להתקיים ולענות על צרכיהם הבסיסיים, נשענים על משאבים בעיר באופן סמוי. אלו, מוצגים לצד שכבות מידע של העיר שנבחנו בהתייחסות לסוגיית דרות הרחוב.</p>
+  </div>
+  <div class="tool-box-right" id="tool_box" style="display: none;">
+    <img
+      src="images/final/Toolbox_BW.png">
+    </img>
+    <!-- <iframe
+        height="100%"
+        width="100%" 
+        src="images/final/Toolbox_BW.pdf#toolbar=0"
+        frameborder="0">
+        style="position:absolute;right:0; top:0; bottom:0; width:100%; height:100%;" 
+    </iframe> -->
+    <!-- <button type="button" class="btn btn-outline-dark" id='close' onclick='closeImage("Mechurim", "\"Lasova\"_Gagon_Addicts")'>x</button> -->
+    <!-- <div id="toolbox_in" style="width: 100%; height: 100%"></div>
+    <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+    <script type="text/javascript">
+      document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
+        var adobeDCView = new AdobeDC.View({clientId: "94680971527e46e7983267addec8b11b", divId: "toolbox_in"});
+        adobeDCView.previewFile({
+          content:{location: {url: "https://studio-project-mid.github.io/mapbox/images/final/Toolbox_BW.pdf"}},
+          metaData:{fileName: " "}
+        }, {defaultViewMode: "FIT_PAGE", showAnnotationTools: false, showLeftHandPanel: false, 
+			                        showPageControls: false, showDownloadPDF: false, showPrintPDF: false});
+      });
+    </script> -->
+  </div>
+  <div class="matrix-class-right" id="matrix" style="display: none;">
+    <img
+      src="images/final/Network_matrix.png">
+    </img>
+    <!-- <embed
+        height="100%"
+        width="100%" 
+        src="images/final/Network_matrix.pdf#zoom=FitH&toolbar=0"
+        style="position:absolute;right:0; top:0; bottom:0; width:100%; height:100%;">
+      </embed> -->
+    <!-- <div id="matrix_in" style="width: 100%; height: 100%"></div>
+    <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+    <script type="text/javascript">
+      document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
+        var adobeDCView = new AdobeDC.View({clientId: "94680971527e46e7983267addec8b11b", divId: "matrix_in"});
+        adobeDCView.previewFile({
+          content:{location: {url: "https://studio-project-mid.github.io/mapbox/images/final/Network_matrix.pdf"}},
+          metaData:{fileName: " "}
+        }, {defaultViewMode: "FIT_PAGE", showAnnotationTools: false, showLeftHandPanel: false, 
+			                        showPageControls: false, showDownloadPDF: false, showPrintPDF: false});
+      });
+    </script> -->
+  </div>
+  <body>
+    <div id="map"></div>
+    <div class="map-overlay-left" id="accordion_container">
+      <div class="accordion" id="accordion">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button" id="main_legend_button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" onclick='accordionClick()'>
+            מקרא
+            </button>
+          </h2>
+          <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne1">
+            <div class="accordion" id="accordion1">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne1">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#research" aria-expanded="true" aria-controls="research" onclick='accordionClick()'>
+                    <input type="checkbox" checked id="מחקר" href="#" class="active" onchange="clickTitle('מחקר')"></input>
+                    <span id="research_span" style="padding-inline: 10px;">מחקר</span>
+                  </button>
+                </h2>
+                <div id="research" class="accordion-collapse collapse hide" aria-labelledby="headingOne1" data-parent="#collapseOne"></div>
+              </div>
+            </div>
+            <div class="accordion" id="accordion2">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne2">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#planning" aria-expanded="true" aria-controls="planning" onclick='accordionClick()'>
+                    <input type="checkbox" id="תכנון" href="#" class="active" onchange="clickTitle('תכנון')"></input>
+                    <span id="planning_span" style="padding-inline: 10px;">תכנון</span>
+                  </button>
+                </h2>
+                <div id="planning" class="accordion-collapse collapse hide" aria-labelledby="headingOne2" data-parent="#collapseOne"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    <div class="full-image" id="Mechurim">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeImage("Mechurim", "\"Lasova\"_Gagon_Addicts")'>x</button>
+      <div id="Mechurim_in"></div>
+      <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+      <script type="text/javascript">
+        document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
+          var adobeDCView = new AdobeDC.View({clientId: "94680971527e46e7983267addec8b11b", divId: "Mechurim_in"});
+          adobeDCView.previewFile({
+            content:{location: {url: "https://studio-project-mid.github.io/mapbox/images/Mechurim.pdf"}},
+            metaData:{fileName: "פרטים גגון מכורים"}
+          }, {embedMode: "SIZED_CONTAINER", showDownloadPDF: false, showPrintPDF: false});
+        });
+      </script>
+    </div>
+    <div class="full-image" id="Women">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeImage("Women", "\"Lasova\"_Gagon_Women")'>x</button>
+      <div id="Women_in"></div>
+      <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+      <script type="text/javascript">
+        document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
+          var adobeDCView = new AdobeDC.View({clientId: "94680971527e46e7983267addec8b11b", divId: "Women_in"});
+          adobeDCView.previewFile({
+            content:{location: {url: "https://studio-project-mid.github.io/mapbox/images/Women.pdf"}},
+            metaData:{fileName: "פרטים גגון נשים"}
+          }, {embedMode: "SIZED_CONTAINER", showDownloadPDF: false, showPrintPDF: false});
+        });
+      </script>
+    </div>
+    <div class="full-image" id="Dirat Maavar">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeImage("Dirat Maavar", "\"Lasova\"_Transition Apartment")'>x</button>
+      <div id="Dirat Maavar_in"></div>
+      <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+      <script type="text/javascript">
+        document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
+          var adobeDCView = new AdobeDC.View({clientId: "94680971527e46e7983267addec8b11b", divId: "Dirat Maavar_in"});
+          adobeDCView.previewFile({
+            content:{location: {url: "https://studio-project-mid.github.io/mapbox/images/Dirat Maavar.pdf"}},
+            metaData:{fileName: "פרטים דירת מעבר"}
+          }, {embedMode: "SIZED_CONTAINER", showDownloadPDF: false, showPrintPDF: false});
+        });
+      </script>
+    </div>
+   
+    <div class="full-image" id="Dirty Burger img">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeImage("Dirty Burger img", "Dirty Burger")'>x</button>
+      <div id="Dirty Burger img_in"></div>
+      <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+      <script type="text/javascript">
+        document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
+          var adobeDCView = new AdobeDC.View({clientId: "94680971527e46e7983267addec8b11b", divId: "Dirty Burger img_in"});
+          adobeDCView.previewFile({
+            content:{location: {url: "https://studio-project-mid.github.io/mapbox/images/Dirty Burger.pdf"}},
+            metaData:{fileName: '"המלוכלך"'}
+          }, {embedMode: "SIZED_CONTAINER", showDownloadPDF: false, showPrintPDF: false});
+        });
+      </script>
+    </div>
+    <div class="full-image" id="Frishman 46">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeImage("Frishman 46", "Natan")'>x</button>
+
+      <div id="Frishman 46_in"></div>
+      <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+      <script type="text/javascript">
+        document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
+          var adobeDCView = new AdobeDC.View({clientId: "94680971527e46e7983267addec8b11b", divId: "Frishman 46_in"});
+          adobeDCView.previewFile({
+            content:{location: {url: "https://studio-project-mid.github.io/mapbox/images/Frishman 46.pdf"}},
+            metaData:{fileName: "ספסל מול מגדל פרישמן"}
+          }, {embedMode: "SIZED_CONTAINER", showDownloadPDF: false, showPrintPDF: false});
+        });
+      </script>
+    </div>
+    <div class="full-image" id="Dizengoff  Square_in">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeImage("Dizengoff  Square_in", "Dizengoff  Square")'>x</button>
+      <button class="button" onclick="changeSource('Dizengoff  Square_in', 'Dizengoff  Square_in2')"><div class="button__arrow button__arrow--left"></div></button>
+      <div id="Dizengoff  Square_in_in"></div>
+      <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+      <script type="text/javascript">
+        document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
+          var adobeDCView = new AdobeDC.View({clientId: "94680971527e46e7983267addec8b11b", divId: "Dizengoff  Square_in_in"});
+          adobeDCView.previewFile({
+            content:{location: {url: "https://studio-project-mid.github.io/mapbox/images/final/Sections/Dizengoff Section.pdf"}},
+            metaData:{fileName: " "}
+          }, {embedMode: "SIZED_CONTAINER", showDownloadPDF: false, showPrintPDF: false});
+        });
+        var pdfHeader = document.getElementsByClassName('sdk-HeaderView-header')[0];
+        if (pdfHeader != undefined)
+          pdfHeader.remove();
+      </script>
+    </div>
+   
+    <div class="full-image" id="Dizengoff  Square_in2">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeImage("Dizengoff  Square_in2", "Dizengoff  Square")'>x</button>
+      <button class="button" onclick="changeSource('Dizengoff  Square_in2', 'Dizengoff  Square_in')"><div class="button__arrow button__arrow--left"></div></button>
+      <div id="Dizengoff  Square_in2_in"></div>
+      <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+      <script type="text/javascript">
+        document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
+          var adobeDCView = new AdobeDC.View({clientId: "94680971527e46e7983267addec8b11b", divId: "Dizengoff  Square_in2_in"});
+          adobeDCView.previewFile({
+            content:{location: {url: "https://studio-project-mid.github.io/mapbox/images/final/Sections/Zoom-in Section.pdf"}},
+            metaData:{fileName: " "}
+          }, {embedMode: "SIZED_CONTAINER", showDownloadPDF: false, showPrintPDF: false});
+        });
+      </script>
+    </div>
+    <div class="full-image" id="market_in">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeImage("market_in", "market")'>x</button>
+      <button class="button" onclick="changeSource('market_in', 'market_in2')"><div class="button__arrow button__arrow--left"></div></button>
+      <div id="market_in_in"></div>
+      <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+      <script type="text/javascript">
+        document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
+          var adobeDCView = new AdobeDC.View({clientId: "94680971527e46e7983267addec8b11b", divId: "market_in_in"});
+          adobeDCView.previewFile({
+            content:{location: {url: "https://studio-project-mid.github.io/mapbox/images/final/Sections/Market Section.pdf"}},
+            metaData:{fileName: " "}
+          }, {embedMode: "SIZED_CONTAINER", showDownloadPDF: false, showPrintPDF: false});
+        });
+      </script>
+    </div>
+    <div class="full-image" id="market_in2">
+      <button type="button" class="btn btn-outline-dark" id='left_close' onclick='closeImage("market_in2", "market")'>x</button>
+      <button class="button" onclick="changeSource('market_in2', 'market_in')"><div class="button__arrow button__arrow--left"></div></button>
+      <embed
+        id="market_in2_in"
+        height="100%"
+        width="100%" 
+        src="images/final/Sections/Zoom-in-Section_GIF.gif#view=Fit">
+      </embed>
+      
+    </div>
+
+    <div class="full-image" id="Allocations_all" style="opacity: 100%;">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeCurrentImage("Allocations_all")'>x</button>
+      <!-- <button class="button" onclick="changeSource('Allocations_all', 'Allocations_all_in')"><div class="button__arrow button__arrow--left"></div></button> -->
+      <div id="Allocations_all_in"></div>
+      <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+      <script type="text/javascript">
+        document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
+          var adobeDCView = new AdobeDC.View({clientId: "94680971527e46e7983267addec8b11b", divId: "Allocations_all_in"});
+          adobeDCView.previewFile({
+            content:{location: {url: "https://studio-project-mid.github.io/mapbox/images/final/Planning/Allocations_all.pdf"}},
+            metaData:{fileName: " "}
+          }, {embedMode: "SIZED_CONTAINER", showDownloadPDF: false, showPrintPDF: false});
+        });
+      </script>
+    </div>
+
+    <div class="full-image" id="Magen_David_all" style="opacity: 100%;">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeCurrentImage("Magen_David_all")'>x</button>
+      <!-- <button class="button" onclick="changeSource('Allocations_all', 'Allocations_all_in')"><div class="button__arrow button__arrow--left"></div></button> -->
+      <div id="Magen_David_all_in"></div>
+      <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+      <script type="text/javascript">
+        document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
+          var adobeDCView = new AdobeDC.View({clientId: "94680971527e46e7983267addec8b11b", divId: "Magen_David_all_in"});
+          adobeDCView.previewFile({
+            content:{location: {url: "https://studio-project-mid.github.io/mapbox/images/final/Planning/Magen_David_all.pdf"}},
+            metaData:{fileName: " "}
+          }, {embedMode: "SIZED_CONTAINER", showDownloadPDF: false, showPrintPDF: false});
+        });
+      </script>
+    </div>
+
+    <div class="full-image" id="Food_Point_all" style="opacity: 100%;">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeCurrentImage("Food_Point_all")'>x</button>
+      <!-- <button class="button" onclick="changeSource('Allocations_all', 'Allocations_all_in')"><div class="button__arrow button__arrow--left"></div></button> -->
+      <div id="Food_Point_all_in"></div>
+      <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+      <script type="text/javascript">
+        document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
+          var adobeDCView = new AdobeDC.View({clientId: "94680971527e46e7983267addec8b11b", divId: "Food_Point_all_in"});
+          adobeDCView.previewFile({
+            content:{location: {url: "https://studio-project-mid.github.io/mapbox/images/final/Planning/Food_Point_all.pdf"}},
+            metaData:{fileName: " "}
+          }, {embedMode: "SIZED_CONTAINER", showDownloadPDF: false, showPrintPDF: false});
+        });
+      </script>
+    </div>
+
+    <div class="full-image" id="Medical_Treatment_all" style="opacity: 100%;">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeCurrentImage("Medical_Treatment_all")'>x</button>
+      <!-- <button class="button" onclick="changeSource('Allocations_all', 'Allocations_all_in')"><div class="button__arrow button__arrow--left"></div></button> -->
+      <div id="Medical_Treatment_all_in"></div>
+      <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+      <script type="text/javascript">
+        document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
+          var adobeDCView = new AdobeDC.View({clientId: "94680971527e46e7983267addec8b11b", divId: "Medical_Treatment_all_in"});
+          adobeDCView.previewFile({
+            content:{location: {url: "https://studio-project-mid.github.io/mapbox/images/final/Planning/Medical_Treatment_all.pdf"}},
+            metaData:{fileName: " "}
+          }, {embedMode: "SIZED_CONTAINER", showDownloadPDF: false, showPrintPDF: false});
+        });
+      </script>
+    </div>
+
+    <div class="full-image" id="Refreshment_all" style="opacity: 100%;">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeCurrentImage("Refreshment_all")'>x</button>
+      <!-- <button class="button" onclick="changeSource('Allocations_all', 'Allocations_all_in')"><div class="button__arrow button__arrow--left"></div></button> -->
+      <div id="Refreshment_all_in"></div>
+      <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+      <script type="text/javascript">
+        document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
+          var adobeDCView = new AdobeDC.View({clientId: "94680971527e46e7983267addec8b11b", divId: "Refreshment_all_in"});
+          adobeDCView.previewFile({
+            content:{location: {url: "https://studio-project-mid.github.io/mapbox/images/final/Planning/Refreshment_all.pdf"}},
+            metaData:{fileName: " "}
+          }, {embedMode: "SIZED_CONTAINER", showDownloadPDF: false, showPrintPDF: false});
+        });
+      </script>
+    </div>
+
+    <div class="form-popup-right" id="Gagon_Addicts">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeForm()'>x</button>
+      <button type="button" class="btn btn-outline-secondary" id='enlarge' onclick='openImage("Mechurim")'>Enlarge</button>
+      <form action="/action_page.php" class="form-container" id="text_form"></form>
+      <embed
+        height="100%"
+        width="100%" 
+        src="images/Mechurim.pdf">
+      </embed>
+    </div>
+    <div class="form-popup-right" id="Gagon_Women">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeForm()'>x</button>
+      <button type="button" class="btn btn-outline-secondary" id='enlarge' onclick='openImage("Women")'>Enlarge</button>
+      <form action="/action_page.php" class="form-container" id="text_form"></form>
+      <embed
+        height="100%"
+        width="100%" 
+        src="images/Women.pdf">
+      </embed>
+    </div>
+    <div class="form-popup-right" id="Transition Apartment">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeForm()'>x</button>
+      <button type="button" class="btn btn-outline-secondary" id='enlarge' onclick='openImage("Dirat Maavar")'>Enlarge</button>
+      <form action="/action_page.php" class="form-container" id="text_form"></form>
+      <embed
+        height="100%"
+        width="100%" 
+        src="images/Dirat Maavar.pdf">
+      </embed>
+    </div>
+    <audio controls id="Hygiene Center">
+      <source src="audio/חביב_מרכז היגיינה.m4a" type="audio/wav">
+    </audio>
+    <audio controls id="The Platform">
+      <source src="audio/יואב_יחידת דרי רחוב.mp3" type="audio/mp3">
+    </audio>
+    <div class="form-popup-right" id="Issa">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeForm("Issa")'>x</button>
+      <form action="/action_page.php" class="form-container" id="text_form"></form>
+      <iframe 
+      width="560" 
+      height="315" 
+      src="https://www.youtube.com/embed/VEznznkTYB4" 
+      title="Issa" 
+      frameborder="0" 
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+      allowfullscreen>
+      </iframe>
+    </div>
+    <div class="form-popup-right" id="Ilan">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeForm("Ilan")'>x</button>
+      <form action="/action_page.php" class="form-container" id="text_form"></form>
+      <audio controls>
+        <source src="images/final/Sleeping/Audios/Ilan.wav" type="audio/wav">
+      </audio>
+    </div>
+    <div class="form-popup-right" id="Shiloh">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeForm("Shiloh")'>x</button>
+      <form action="/action_page.php" class="form-container" id="text_form"></form>
+      <audio controls>
+        <source src="images/final/Sleeping/Audios/Shiloh.wav" type="audio/wav">
+      </audio>
+    </div>
+    <div class="form-popup-right" id="Rotem">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeForm("Rotem")'>x</button>
+      <form action="/action_page.php" class="form-container" id="text_form"></form>
+      <iframe 
+      width="560" 
+      height="315" 
+      src="https://www.youtube.com/embed/UlMRgSTk0js" 
+      title="Rotem" 
+      frameborder="0" 
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+      allowfullscreen>
+      </iframe>
+    </div>
+    <div class="form-popup-right" id="Eyal_D">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeForm("Eyal_D")'>x</button>
+      <form action="/action_page.php" class="form-container" id="text_form"></form>
+      <iframe 
+      width="560" 
+      height="315" 
+      src="https://www.youtube.com/embed/FuSArgIpIFo" 
+      title="Eyal" 
+      frameborder="0" 
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+      allowfullscreen>
+      </iframe>
+    </div>
+    <div class="form-popup-right" id="Sandra">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeForm("Sandra")'>x</button>
+      <form action="/action_page.php" class="form-container" id="text_form"></form>
+      <iframe 
+      width="560" 
+      height="315" 
+      src="https://www.youtube.com/embed/kSoXNG8IxA4" 
+      title="Sandra" 
+      frameborder="0" 
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+      allowfullscreen>
+      </iframe>
+    </div>
+    
+    <div class="form-popup-right" id="Dirty Burger">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeForm()'>x</button>
+      <button type="button" class="btn btn-outline-secondary" id='enlarge' onclick='openImage("Dirty Burger img")'>Enlarge</button>
+      <form action="/action_page.php" class="form-container" id="text_form"></form>
+      <embed
+        height="100%"
+        width="100%" 
+        src="images/Dirty Burger.pdf">
+      </embed>
+    </div>
+    <form action="/action_page.php" class="text-container-right" id="Synagogue Beit El">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeForm()'>x</button>
+      <p>״תשאלי אותי איפה אני אוכל בשבת, למרות שאני לא כל כך רעב בבוקר…חוף פרישמן קצת קרוב לבן יהודה יש בית כנסת של הקהילה הצרפתית…עכשיו, כל שבת אחרי שהם גומרים את התפילה הם עושים קידוש, עכשיו אני אוהב נורא חמין, אז כל שבת הם עושים בחצר אוכל, וזה מה שאני לוקח…״ (נתן, דר רחוב)
+      </p>
+    </form>
+
+    <div class="form-popup-right" id="Mati">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeForm("Mati")'>x</button>
+      <form action="/action_page.php" class="form-container" id="text_form"></form>
+      <iframe 
+      width="560" 
+      height="315" 
+      src="https://www.youtube.com/embed/DSquda0KJEA" 
+      title="Mati" 
+      frameborder="0" 
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+      allowfullscreen>
+      </iframe>
+    </div>
+    <div class="form-popup-right" id="Natan">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeForm("Natan")'>x</button>
+      <button type="button" class="btn btn-outline-secondary" id='enlarge' onclick='openImage("Frishman 46")'>Enlarge</button>
+      <form action="/action_page.php" class="form-container" id="text_form"></form>
+      <iframe 
+      width="560" 
+      height="315" 
+      src="https://www.youtube.com/embed/24_9tw-MQAw"
+      title="Natan" 
+      frameborder="0" 
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+      allowfullscreen>
+      </iframe>
+      <embed
+        height="100%"
+        width="100%" 
+        src="images/Frishman 46.pdf">
+      </embed>
+    </div>
+    <div class="form-popup-right" id="Dizengoff  Square">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeForm()'>x</button>
+      <button type="button" class="btn btn-outline-secondary" id='enlarge' onclick='openImage("Dizengoff  Square_in")'>Enlarge</button>
+      <form action="/action_page.php" class="form-container" id="text_form"></form>
+      <embed
+        height="100%"
+        width="100%" 
+        src="images/final/Sections/Dizengoff Section.pdf">
+      </embed>
+      <embed
+        height="100%"
+        width="100%" 
+        src="images/final/Sections/Zoom-in Section.pdf">
+      </embed>
+    </div>
+    <div class="form-popup-right" id="Yechezkel">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeForm("Yechezkel")'>x</button>
+      <form action="/action_page.php" class="form-container" id="text_form"></form>
+      <iframe 
+      width="560" 
+      height="315" 
+      src="https://www.youtube.com/embed/pv_3srpmluY" 
+      title="Yechezkel" 
+      frameborder="0" 
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+      allowfullscreen>
+      </iframe>
+    </div>
+    <div class="form-popup-right" id="Pasta Basta" style="height: 390px;">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeForm("Pasta Basta")'>x</button>
+      <form action="/action_page.php" class="form-container" id="text_form"></form>
+      <iframe 
+      width="560" 
+      height="315" 
+      src="https://www.youtube.com/embed/cfGCpt0K-ys" 
+      title="Mati" 
+      frameborder="0" 
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+      allowfullscreen>
+      </iframe>
+    </div>
+    <div class="form-popup-right" id="dizengoff Bottles" style="height: 390px;">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeForm("dizengoff Bottles")'>x</button>
+      <form action="/action_page.php" class="form-container" id="text_form"></form>
+      <iframe 
+      width="560" 
+      height="315" 
+      src="https://www.youtube.com/embed/urNfjpW-Cfg" 
+      title="Mati" 
+      frameborder="0" 
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+      allowfullscreen>
+      </iframe>
+    </div>
+    <div class="form-popup-right" id="market">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeForm()'>x</button>
+      <button type="button" class="btn btn-outline-secondary" id='enlarge' onclick='openImage("market_in")'>Enlarge</button>
+      <form action="/action_page.php" class="form-container" id="text_form"></form>
+      <embed
+        height="100%"
+        width="100%" 
+        src="images/final/Sections/Market Section.pdf">
+      </embed>
+      <embed
+        height="100%"
+        width="100%" 
+        src="images/final/Sections/Zoom-in-Section_GIF.gif">
+      </embed>
+    </div>
+    <div class="form-popup-right" id="Adam">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeForm()'>x</button>
+      <!-- <button type="button" class="btn btn-outline-secondary" id='enlarge' onclick='openImage("Adam_in")'>Enlarge</button> -->
+      <form action="/action_page.php" class="form-container" id="text_form"></form>
+      <img
+        src="images/final/Sleeping/Photos/אדם.JPG">
+      </img>
+    </div>
+    <div class="form-popup-right" id="Eyal">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeForm()'>x</button>
+      <!-- <button type="button" class="btn btn-outline-secondary" id='enlarge' onclick='openImage("Eyal_in")'>Enlarge</button> -->
+      <form action="/action_page.php" class="form-container" id="text_form"></form>
+      <img
+        src="images/final/Sleeping/Photos/אייל.JPG">
+      </img>
+    </div>
+    <div class="form-popup-right" id="Amir">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeForm()'>x</button>
+      <!-- <button type="button" class="btn btn-outline-secondary" id='enlarge' onclick='openImage("Amir_in")'>Enlarge</button> -->
+      <form action="/action_page.php" class="form-container" id="text_form"></form>
+      <img
+        src="images/final/Sleeping/Photos/אמיר.JPG">
+      </img>
+    </div>
+    <div class="form-popup-right" id="York">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeForm()'>x</button>
+      <!-- <button type="button" class="btn btn-outline-secondary" id='enlarge' onclick='openImage("York_in")'>Enlarge</button> -->
+      <form action="/action_page.php" class="form-container" id="text_form"></form>
+      <img
+        src="images/final/Sleeping/Photos/יורק.JPG">
+      </img>
+    </div>
+    <div class="form-popup-right" id="Yelena">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeForm()'>x</button>
+      <!-- <button type="button" class="btn btn-outline-secondary" id='enlarge' onclick='openImage("Yelena_in")'>Enlarge</button> -->
+      <form action="/action_page.php" class="form-container" id="text_form"></form>
+      <img
+        src="images/final/Sleeping/Photos/ילנה.jpg">
+      </img>
+    </div>
+    <div class="form-popup-right" id="Maor">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeForm()'>x</button>
+      <!-- <button type="button" class="btn btn-outline-secondary" id='enlarge' onclick='openImage("Maor_in")'>Enlarge</button> -->
+      <form action="/action_page.php" class="form-container" id="text_form"></form>
+      <img
+        src="images/final/Sleeping/Photos/מאור.jpg">
+      </img>
+    </div>
+    <div class="form-popup-right" id="Muhammad">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeForm()'>x</button>
+      <!-- <button type="button" class="btn btn-outline-secondary" id='enlarge' onclick='openImage("Muhammad_in")'>Enlarge</button> -->
+      <form action="/action_page.php" class="form-container" id="text_form"></form>
+      <img
+        src="images/final/Sleeping/Photos/מוחמד.JPG">
+      </img>
+    </div>
+    <div class="form-popup-right" id="Michael">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeForm()'>x</button>
+      <!-- <button type="button" class="btn btn-outline-secondary" id='enlarge' onclick='openImage("Michael_in")'>Enlarge</button> -->
+      <form action="/action_page.php" class="form-container" id="text_form"></form>
+      <img
+        src="images/final/Sleeping/Photos/מיכאל.JPG">
+      </img>
+    </div>
+    <div class="form-popup-right" id="White Pitbull">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeForm()'>x</button>
+      <!-- <button type="button" class="btn btn-outline-secondary" id='enlarge' onclick='openImage("White Pitbull_in")'>Enlarge</button> -->
+      <form action="/action_page.php" class="form-container" id="text_form"></form>
+      <img
+        src="images/final/Sleeping/Photos/פיטבול לבן.jpg">
+      </img>
+    </div>
+    <div class="form-popup-right" id="Tzipi">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeForm()'>x</button>
+      <!-- <button type="button" class="btn btn-outline-secondary" id='enlarge' onclick='openImage("Tzipi_in")'>Enlarge</button> -->
+      <form action="/action_page.php" class="form-container" id="text_form"></form>
+      <img
+        src="images/final/Sleeping/Photos/ציפי.jpg">
+      </img>
+    </div>
+    
+    <div class="form-popup-right" id="only_text" style="direction: rtl; text-align: right; width: 400px;">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeForm()'>x</button>
+      <form action="/action_page.php" class="form-container" id="text_form"></form>
+    </div>
+  
+    <script>
+
+      mapboxgl.accessToken = 'pk.eyJ1IjoiYWRpZ2FsaSIsImEiOiJja3dsc3ViOHYwMXNxMnBxdDRmOW1tcDRhIn0.01oFmibnj8b3erAu6aTXIg';
+      mapboxgl.setRTLTextPlugin(
+        'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.2.3/mapbox-gl-rtl-text.js',
+        null,
+        true 
+      );
+
+      // Global Controls
+      var controls = [];
+
+      var language = ''; // Set language to '_en' for English or '' for Hebrew
+      var flying = false;
+      var formToOpen = "";
+      var mapPopups = true;
+      var draftMap = new mapboxgl.Map({
+        container: 'map', 
+        style: 'mapbox://styles/adigali/cl2vr1nwz003f14mzeyzvad26' 
+      });
+
+      var draftMap2 = new mapboxgl.Map({
+        container: 'map', 
+        style: 'mapbox://styles/adigali/cl4o2i8yw003p14l5y7pcdaa8' 
+      });
+
+      var map = new mapboxgl.Map({
+        container: 'map', 
+        style: 'mapbox://styles/adigali/ckwluaunh2ymp14o5vwkekbgg' 
+        
+      });
+
+      // var pos = [34.77551, 32.07435];
+      var pos = [34.77475749494556, 32.07036562603348];
+      
+      var isRouteOn = false;
+      var routePopups = [];
+      var inRouteIds = [];
+
+      var dizengoffOn = false;
+
+      var hebrew_english_titles = {
+        '3D': '3D',
+        'Sleeping Corners': 'לינה',
+        'Food': 'מזון',
+        'Stay': 'שהייה',
+        'Researched Staying Points': 'נקודות שהייה שנחקרו',
+        'green areas and parks': 'גינות',
+        'Squares': 'כיכרות',
+        'Work': 'עבודה', 
+        'Beggaring': 'קיבוץ נדבות',
+        'Recycling Bottles': 'איסוף בקבוקים', 
+        'Drug Deals': 'עסקאות סמים' ,
+        'Front and Back Yard': 'חצר קדמית ואחורית',
+        'Formal Institutions': 'מוסדות פורמליים',
+        'Parking': 'חניונים',
+        'Air Corridors': 'מסדרונות אוויר',
+        'City Border': 'גבול העיר',
+        'Light Rail': 'תוואי הרכבת הקלה',
+        'Metro': 'רכבת תחתית',
+        'Sleeping': 'לינה',
+        'Abandoned Buildings': 'מבנים נטושים',
+        'Ground Floors': 'קומות קרקע',
+        'Distribution Stations': 'עמדות חלוקה',
+        'Food Points': 'ריכוזיות מזון',
+        'Refreshment': 'התרעננות',
+        'Beaches Wardrobes': 'מלתחות חוף',
+        'Mikvahs': 'מקוואות',
+        'Sport Fields': 'מגרשי ספורט',
+        'Aid': 'סיוע',
+        'Medical - Community Centers': 'רפואי - מרכזים קהילתיים',
+        'Support - Ground Floors': 'תמיכה - קומות קרקע'
+      }
+
+      var legend_head_titles = {
+        'Legend': 'מקרא',
+        'Research': 'מחקר',
+        'Planning': 'תכנון'
+      }
+
+      var titles_text = {
+        'main_title': {
+          '': 'כלי לקריאה מחודשת של תל-אביב מעיניהם של דרי הרחוב',
+          '_en': 'A tool for re-reading Tel Aviv through the eyes of the homeless'
+        },
+        'secondary_title': {
+          '': 'לחץ על הנקודות הצהובות להכרת הסיפורים האישיים \
+          לחץ על הנקודות האדומות בכיכר דיזינגוף \ שוק הכרמל להעמקת מקטע אזורי',
+          '_en': 'Press the yellow dots to learn the personal stories\n \
+                  Press the red dots in Dizengoff Square / Carmel Market to deepen a regional section'
+        },
+        'lower_text': {
+          '': 'המחקר מבוסס על 19 סיפורים אישיים של דרי ודרות רחוב בעיר תל אביב, אשר על מנת להתקיים ולענות על צרכיהם הבסיסיים, נשענים על משאבים בעיר באופן סמוי. אלו, מוצגים לצד שכבות מידע של העיר שנבחנו בהתייחסות לסוגיית דרות הרחוב.',
+          '_en': 'The research is based on 19 personal stories of homeless men and women in the city of Tel Aviv, who, in order to survive and meet their basic needs, rely on resources in the city covertly. These are presented next to information layers of the city that were examined in reference to the issue of street dwellings.'
+        },
+        'Synagogue Beit El': {
+          '': '״תשאלי אותי איפה אני אוכל בשבת, למרות שאני לא כל כך רעב בבוקר…חוף פרישמן קצת קרוב לבן יהודה יש בית כנסת של הקהילה הצרפתית…עכשיו, כל שבת אחרי שהם גומרים את התפילה הם עושים קידוש, עכשיו אני אוהב נורא חמין, אז כל שבת הם עושים בחצר אוכל, וזה מה שאני לוקח…״ (נתן, דר רחוב)',
+          '_en': '"Ask me where I eat on Saturdays, even though I\'m not that hungry in the morning...Frishman Beach is a bit close to Ben Yehuda. There is a synagogue of the French community...Now, every Saturday, after they finish the prayer, they do kiddush. Now I really like meat stew, so every Saturday they make food in the yard, and this is what I take..." (Nathan, Homeless)'
+        }
+      }
+
+      function updateTitles(objects, titles_dict, text_type) {
+        objects.forEach((title_span) => {
+          if (text_type == 'html') {
+            var title_text = title_span.innerHTML;
+          }
+          else {
+            var title_text = title_span.innerText;
+          }
+          var all_titles = Object.entries(titles_dict);
+          var new_title = '';
+          all_titles.forEach((entries) => {
+            if (entries.includes(title_text)) {
+              var index = entries.indexOf(title_text);
+              index = 1 - index;
+              new_title = entries[index];
+            }
+          });
+          if (text_type == 'html') {
+            title_span.innerHTML = new_title;
+          }
+          else {
+            title_span.innerText = new_title;
+          }
+        });
+      }
+
+      function updateLegendLang() {
+        // Get an array of all the titles in the legend
+        var legend_titles = Array.from(document.getElementsByClassName('legend-title'));
+        if (legend_titles.length > 0) {
+          // Add the Objects titles in the legend
+          legend_titles = legend_titles.concat(Array.from(document.getElementsByClassName('legend-button-title')));
+          updateTitles(legend_titles, hebrew_english_titles, 'html');
+        }
+        // Update heading titles (Legend, Research, Planning)
+        var heads = [document.getElementById('main_legend_button'), 
+                    document.getElementById('research_span'),
+                    document.getElementById('planning_span')];
+        updateTitles(heads, legend_head_titles, 'text');
+      }
+      
+      function updatePositions() {
+        var elements = [document.getElementById('accordion_container'),
+                        document.getElementById('secondary_title'),
+                        document.getElementById('matrix'),
+                        document.getElementById('tool_box')
+                        ];
+        var direction = language == '_en' ? 'left' : 'right';
+        var re_direction = language == '_en' ? 'right' : 'left';
+        
+        var popup_forms = Array.from(document.getElementsByClassName('form-popup-' + re_direction));
+        var popup_forms_text = Array.from(document.getElementsByClassName('text-container-' + re_direction));
+        
+        elements = elements.concat(popup_forms);
+        elements = elements.concat(popup_forms_text);
+
+        elements.forEach((elem) => {
+          var class_name = elem.className;
+          var name_list = class_name.split('-');
+          name_list[name_list.length - 1] = name_list[name_list.length - 1] == 'right' ? 'left' : 'right';
+          elem.classList.remove(class_name);
+          elem.classList.add(name_list.join('-'));
+        });
+        
+        controls.forEach((control) => {
+          map.removeControl(control);
+        });
+        controls.forEach((control) => {
+          map.addControl(control, 'top-' + direction);
+        });
+        // if (language == '_en') {
+        //   legend_accordion.classList.remove('map-overlay-left');
+        //   legend_accordion.classList.add('map-overlay-right');
+        //   secondary_title.classList.remove('secondary-title-right');
+        //   secondary_title.classList.add('secondary-title-left');
+        //   controls.forEach((control) => {
+        //     map.removeControl(control);
+        //   });
+        //   controls.forEach((control) => {
+        //     map.addControl(control, 'top-right');
+        //   });
+        //   
+        // }
+        // else {
+        //   legend_accordion.classList.remove('map-overlay-right');
+        //   legend_accordion.classList.add('map-overlay-left');
+        //   secondary_title.classList.remove('secondary-title-left');
+        //   secondary_title.classList.add('secondary-title-right');
+        //   controls.forEach((control) => {
+        //     map.removeControl(control);
+        //   });
+        //   controls.forEach((control) => {
+        //     map.addControl(control, 'top-right');
+        //   });
+        // }
+      }
+      
+      function setLanguage(isUpdate) {
+        label_properties = ['settlement-major-label', 'settlement-minor-label', 'settlement-subdivision-label', 
+                              'state-label', 'country-label',
+                              'road-number-shield', 'road-intersection', 'road-label'];
+        label_properties.forEach((property_name) => {
+          map.setLayoutProperty(property_name, 'text-field', [
+          'get',
+          `name${language}`
+          ]);
+        });
+    
+        for (title_name in titles_text) {
+          if (title_name == "Synagogue Beit El") {
+            title_elem = document.getElementById(title_name).children[1];
+          }
+          else {
+            title_elem = document.getElementById(title_name).children[0];
+          }
+          title_elem.innerText = titles_text[title_name][language];
+          title_elem.style.textAlign = language == '_en' ? 'left' : 'right';
+          title_elem.style.direction = language == '_en' ? 'ltr' : 'rtl';
+        }
+        if (isUpdate) {
+          updatePositions();
+          updateLegendLang();
+        }
+        
+      }
+
+      function closeAllImages(image_list) {
+        for (i = 0; i < image_list.length; i++) {
+          // document.getElementById(image_list[i]).style.display = 'none';
+          document.getElementById(image_list[i]).remove();
+        }
+      }
+
+      function closeCurrentImage(imgId) {
+        document.getElementById(imgId).style.display = 'none';
+      }
+
+      function getNextForm(imageId, image_list, index_dict) {
+        return image_list[index_dict[imageId]];
+      }
+
+      function createFullImageSeries(imgId, nextForm, previousForm, image_list, folder_name) {
+        var divItem = document.createElement('div');
+        divItem.className = 'full-image';
+        divItem.style.opacity = '100%';
+        divItem.id = imgId;
+        document.body.appendChild(divItem);
+        // Close Button
+        var closeButton = document.createElement('button');
+        closeButton.type = 'button';
+        closeButton.className = 'btn btn-outline-dark';
+        closeButton.id = 'close_';
+        closeButton.onclick = function(){closeAllImages(image_list);};
+        closeButton.innerHTML = 'x';
+        // Arrow
+        var arrowButton = document.createElement('button');
+        arrowButton.className = 'button';
+        arrowButton.onclick = function() {changeSource(imgId, nextForm);};
+        var innerButtonDiv = document.createElement('div');
+        innerButtonDiv.className = 'button__arrow button__arrow--left';
+        arrowButton.appendChild(innerButtonDiv);
+        // Right Arrow
+        var rightArrowButton = document.createElement('button');
+        rightArrowButton.className = 'button1';
+        rightArrowButton.onclick = function() {changeSource(imgId, previousForm);};
+        var innerRightButtonDiv = document.createElement('div');
+        innerRightButtonDiv.className = 'button__arrow button__arrow--right';
+        rightArrowButton.appendChild(innerRightButtonDiv);
+        // Adobe
+        var innerDiv = document.createElement('div');
+        innerDiv.id = imgId + "_in";
+        var firstScript = document.createElement('script');
+        firstScript.src = "https://documentcloud.adobe.com/view-sdk/main.js";
+        var secondScript = document.createElement('script');
+        secondScript.type = "text/javascript";
+        secondScript.innerHTML = "document.addEventListener(\"adobe_dc_view_sdk.ready\", function(){ " +
+          "var adobeDCView = new AdobeDC.View({clientId: \"9029a3f828a14ab9b10c9b799a7981d8\", divId: \"" + innerDiv.id + "\"});" +
+          "adobeDCView.previewFile({" +
+            "content:{location: {url: \"https://studio-project-mid.github.io/mapbox/images/final/Planning/" + folder_name + '/' + imgId + ".pdf\"}}," +
+            "metaData:{fileName: \" \"}" +
+          "}, {embedMode: \"SIZED_CONTAINER\", showDownloadPDF: false, showPrintPDF: false, showPageControls: false, showAnnotationTools: false});" +
+        "});";
+        divItem.appendChild(closeButton);
+        divItem.appendChild(arrowButton);
+        divItem.appendChild(rightArrowButton);
+        divItem.appendChild(innerDiv);
+        divItem.appendChild(firstScript);
+        divItem.appendChild(secondScript);
+      }
+
+      var magen_david_list = [
+        'Text_Magen_David',
+        'Magen_David_Context',
+        'Magen_David_Movment_Diagram',
+        'Plans_00',
+        'Plans_01',
+        'Plans_02',
+        'Plans_03',
+        'Magen_David_Section',
+        'Mabat_Bedroom_Materials',
+        'Magen_David'
+      ];
+
+      var allocations_list = [
+        'Text',
+        'Allocations_Context',
+        'Ground_Floors_all',
+        'Ground_Floors_Zoom_in',
+        'Ground_Floors_Zoom_in_02',
+        'Allocations_Section',
+        'Allocations'
+      ];
+
+      var food_point_list = [
+        'Text_food_point',
+        'Food_Point_Context',
+        'Food_Point_Mabat',
+        'Ground_Floor',
+        'First_Floor',
+        'Food_Point_Perspective_Section',
+        'Food_Point'
+      ];
+
+      var medical_treatment_list = [
+        'Medical_Treatment_Text',  
+        'Medical_Treatment_Context',
+        'Medical_Treatment_Elements',
+        'Ground_Plan',
+        'Ground_Plan_zoom_in',
+        'Medical_Treatment_Section',
+        'Medical_Treatment'
+      ];
+
+      var refreshment_list = [
+        'Refreshmen_Text',  
+        'Refreshment_point_Context',
+        'Refreshment_Elements',
+        'Ground_plan',
+        'Ground_plan_zoom_in',
+        'Refreshment_Section',
+        'Refreshment'
+      ];
+
+      var image_lists_for_planning = [
+        magen_david_list,
+        allocations_list,
+        food_point_list,
+        medical_treatment_list,
+        refreshment_list
+      ];
+
+      // function addDocsToRoute(){
+      // for (j = 0; j < image_lists_for_planning.length; j++) {
+      //   var folderSize = image_lists_for_planning[j].length;
+      //   var folderName = image_lists_for_planning[j][folderSize - 1];
+      //   for (i = 0; i < folderSize - 1; i++) {
+      //     var imgId = image_lists_for_planning[j][i];
+      //     var nextForm = i == image_lists_for_planning[j].length - 1 ? image_lists_for_planning[j][0] : image_lists_for_planning[j][i + 1];
+      //     var previousForm = i == 0 ? image_lists_for_planning[j][image_lists_for_planning[j].length - 1] : image_lists_for_planning[j][i - 1];
+      //     createFullImageSeries(imgId, nextForm, previousForm, image_lists_for_planning[j], folderName);
+      //   }
+      // }
+      // }
+
+      function addDocsToRoute(image_list) {
+        var folderSize = image_list.length;
+        var folderName = image_list[folderSize - 1];
+        for (i = 0; i < folderSize - 1; i++) {
+          var imgId = image_list[i];
+          var nextForm = i == image_list.length - 1 ? image_list[0] : image_list[i + 1];
+          var previousForm = i == 0 ? image_list[image_list.length - 1] : image_list[i - 1];
+          createFullImageSeries(imgId, nextForm, previousForm, image_list, folderName);
+        } 
+      }
+
+      function openRouteForm(image_list_str) {
+        image_list = eval(image_list_str);
+        addDocsToRoute(image_list);
+        document.getElementById(image_list[0]).style.display = 'block';
+      }
+
+      // for (i = 0; i < magen_david_list.length; i++) {
+      //   var imgId = magen_david_list[i];
+      //   var nextForm = i == magen_david_list.length - 1 ? magen_david_list[0] : magen_david_list[i + 1];
+      //   var previousForm = i == 0 ? magen_david_list[magen_david_list.length - 1] : magen_david_list[i - 1];
+      //   createFullImageSeries(imgId, nextForm, previousForm, magen_david_list, magen_david_list[magen_david_list.length - 1]);
+      // }
+
+      // for (i = 0; i < allocations_list.length; i++) {
+      //   var imgId = allocations_list[i];
+      //   var nextForm = i == allocations_list.length - 1 ? allocations_list[0] : allocations_list[i + 1];
+      //   var previousForm = i == 0 ? allocations_list[allocations_list.length - 1] : allocations_list[i - 1];
+      //   createFullImageSeries(imgId, nextForm, previousForm, allocations_list, allocations_list[allocations_list.length - 1]);
+      // }
+
+      // for (i = 0; i < food_point_list.length; i++) {
+      //   var imgId = food_point_list[i];
+      //   var nextForm = i == food_point_list.length - 1 ? food_point_list[0] : food_point_list[i + 1];
+      //   var previousForm = i == 0 ? food_point_list[food_point_list.length - 1] : food_point_list[i - 1];
+      //   createFullImageSeries(imgId, nextForm, previousForm, food_point_list, food_point_list[food_point_list.length - 1]);
+      // }
+
+      // for (i = 0; i < medical_treatment_list.length; i++) {
+      //   var imgId = medical_treatment_list[i];
+      //   var nextForm = i == medical_treatment_list.length - 1 ? medical_treatment_list[0] : medical_treatment_list[i + 1];
+      //   var previousForm = i == 0 ? medical_treatment_list[medical_treatment_list.length - 1] : medical_treatment_list[i - 1];
+      //   createFullImageSeries(imgId, nextForm, previousForm, medical_treatment_list, medical_treatment_list[medical_treatment_list.length - 1]);
+      // }
+
+      // for (i = 0; i < refreshment_list.length; i++) {
+      //   var imgId = refreshment_list[i];
+      //   var nextForm = i == refreshment_list.length - 1 ? refreshment_list[0] : refreshment_list[i + 1];
+      //   var previousForm = i == 0 ? refreshment_list[refreshment_list.length - 1] : refreshment_list[i - 1];
+      //   createFullImageSeries(imgId, nextForm, previousForm, refreshment_list, refreshment_list[refreshment_list.length - 1]);
+      // }
+
+      map.on('load', function () {
+        map.getCanvas().style.cursor = 'default';
+
+        var draft_map_layers = draftMap.getStyle().layers;
+        var draft_map_layers2 = draftMap2.getStyle().layers;
+        map.addSource('composite_new', draftMap.getStyle().sources['composite']);
+        map.addSource('composite_new2', draftMap2.getStyle().sources['composite']);
+        for (i = 75; i < draft_map_layers.length; i++) {
+          var beforeLayer = map.getStyle().layers[map.getStyle().layers.length - 1].id;
+          if (draft_map_layers[i].id == 'kibbutz-nadavot' || draft_map_layers[i].id == 'collecting-bottles' || draft_map_layers[i].id == 'drug-deals') {
+            beforeLayer = map.getStyle().layers[78].id;
+          }
+          draft_map_layers[i]['source'] += "_new";
+          map.addLayer(
+            draft_map_layers[i], 
+            beforeLayer
+          )
+        }
+        for (i = 74; i < draft_map_layers2.length; i++) {
+          draft_map_layers2[i]['source'] += "_new2";
+          map.addLayer(
+            draft_map_layers2[i], 
+            map.getStyle().layers[map.getStyle().layers.length - 1].id
+          )
+        }
+        // Move 3D layer to back
+        map.moveLayer('3D', map.getStyle().layers[78].id);
+
+        // setLanguage(true);
+        // updatePositions();
+
+        function setRouteVis(vis) {
+          map.setLayoutProperty(
+            '3d-route',
+            'visibility',
+            vis
+          );
+          map.setLayoutProperty(
+            '24h-homeless-route',
+            'visibility',
+            vis
+          );
+        }
+
+        // Turn off 3D layer
+        map.setLayoutProperty(
+            '3D',
+            'visibility',
+            'none'
+        );
+        // Turn off route layers
+        setRouteVis('none');
+
+        // map.setLayerZoomRange('3d-route', 0, 24);
+        // map.setLayerZoomRange('24h-homeless-route', 0, 24);
+
+        map.flyTo({
+          
+          center: pos,
+          zoom: 13,
+          bearing: 0,
+          
+          speed: 0.2, 
+          curve: 1, 
+          
+          easing: (t) => t,
+          
+          essential: true
+        });
+
+        var nav_control = new mapboxgl.NavigationControl({
+          visualizePitch: true
+        });
+        controls.push(nav_control);
+        map.addControl(nav_control, 'top-right');
+        document.querySelector('.mapboxgl-ctrl-compass').addEventListener('click', () =>{
+          
+          setMapInteractive(true);
+          mapPopups = true;
+          dizengoffOn = false;
+          // Turn off 3D layer
+          var layer_3d = document.getElementById('3D');
+          layer_3d.checked = false;
+          map.setLayoutProperty(
+            '3D',
+            'visibility',
+            'none'
+          );
+
+          if (map.getLayoutProperty('3d-route', 'visibility') == 'visible') {
+            // Open legend
+            accordionOpen();
+            // Turn off route
+            setRouteVis('none');
+            // Remove route popups
+            while (routePopups.length > 0) {
+              routePopups.pop().remove();
+            }
+            inRouteIds = [];
+            // Turn off route layers
+            for (i = 0; i < route_layers.length; i++) {
+              var idx = i;
+              var current_box = document.getElementById(route_layers[i]);
+              current_box.checked = false;
+              var evt = document.createEvent("HTMLEvents");
+              evt.initEvent("change", false, true);
+              current_box.dispatchEvent(evt);
+              i = idx;
+            }
+            // Turn on planning layers
+            var planning_checkbox = document.getElementById('תכנון');
+            planning_checkbox.checked = true;
+            var evt = document.createEvent("HTMLEvents");
+            evt.initEvent("change", false, true);
+            planning_checkbox.dispatchEvent(evt);
+            // Turn on map titles
+            document.getElementById("main_title").style.display = "block";
+            // Fly back up
+            map.fire('flystart');
+          }
+          
+          
+          // Fly to initial position
+          map.flyTo({
+          center: map.getCenter(),
+          zoom: 14,
+          bearing: 0,
+          pitch: 0,
+          speed: 0.5,
+          curve: 1,
+          easing: (t) => t,
+          essential: true
+          });
+        });
+
+        var toCheck = true;
+
+        var titlesHebrew = {
+          'מחקר': 'research',
+          'תכנון': 'planning'
+        }
+
+        var layers_for_legend = {
+          'מחקר': {
+            '3D': '3D',
+            'sleeping-corners': 'לינה',
+            'food-exist': 'מזון',
+            'שהייה': {
+              'stay-points-exist': 'נקודות שהייה שנחקרו',
+              'green areas and parks': 'גינות',
+              'squares': 'כיכרות'
+            },
+            'עבודה': {
+              'kibbutz-nadavot': 'קיבוץ נדבות',
+              'collecting-bottles': 'איסוף בקבוקים', 
+              'drug-deals': 'עסקאות סמים' 
+            },
+            'front yard and back yard': 'חצר קדמית ואחורית',
+            'formal': 'מוסדות פורמליים',
+            'parking': 'חניונים',
+            'air-corridors': 'מסדרונות אוויר',
+            'city-border': 'גבול העיר',
+            'light-rail': 'תוואי הרכבת הקלה',
+            'metro': 'רכבת תחתית',
+          },
+          'תכנון': {
+            'לינה': {
+              '620-abandoned buildings': 'מבנים נטושים',
+              '650-ground-floors': 'קומות קרקע'
+            },
+            'מזון': {
+              'food-planning': 'מבנים נטושים',
+              'food-density': 'עמדות חלוקה',
+              'food-points': 'ריכוזיות מזון'
+            },
+            'התרעננות': {
+              'beaches-wardrobes': 'מלתחות חוף',
+              'mikvahs': 'מקוואות',
+              'sport': 'מגרשי ספורט',
+              '50-refreshment ground': 'קומות קרקע'
+            },
+            'סיוע': {
+              'community centers': 'רפואי - מרכזים קהילתיים',
+              '80-support-ground-floor': 'תמיכה - קומות קרקע'
+            }
+          }
+        }
+
+        var individual_layers = [
+          '3D',
+          'city-border',
+          'light-rail',
+          'metro',
+          'kibbutz-nadavot',
+          'collecting-bottles', 
+          'drug-deals',
+          'formal',
+          'stay-points-exist',
+          'green areas and parks',
+          'food-exist',
+          'שהייה_',
+          'squares'
+        ];
+
+        var researchOn = true;
+        var planningOn = false;
+        var layers_map = map.getStyle().layers;
+
+        function getLayerFromId(layerId) {
+          for (i = 78; i < layers_map.length; i++) {
+            if (layers_map[i].id == layerId)
+              return layers_map[i];
+          }
+          return undefined;
+        }
+
+        function setLayerVis(current_layer, e) {
+          const clickedLayer = current_layer.textContent;
+          if (e != null) {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+          
+          const visibility = map.getLayoutProperty(
+            clickedLayer,
+            'visibility'
+          );
+          if (visibility == 'visible' && current_layer.checked == false) {
+              map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+              this.className = '';
+          } else {
+            this.className = 'active';
+            map.setLayoutProperty(
+              clickedLayer,
+              'visibility',
+              'visible'
+            );
+          }
+        }
+
+
+        
+        function addTitleToLegend(titleName) {
+          if (titleName == "תכנון") {
+            toCheck = false;
+          }
+          var line_div = document.createElement('div');
+          line_div.className = 'accordion-body';
+          line_div.id = 'title_' + titleName;
+          const all_box = document.createElement('input');
+          all_box.type = 'checkbox';
+          all_box.checked = toCheck;
+          all_box.id = titleName;
+          all_box.href = '#';
+          all_box.textContent = titleName;
+          all_box.className = 'active';
+
+          var startIdx = collapseOne.children.length;
+
+          all_box.onchange = function (e) {
+            // var mainTitle = document.getElementById('main_title').children[0];
+            var secondaryTitle = document.getElementById('secondary_title');
+            // var lowerText = document.getElementById('lower_text').children[0];
+            // var instructionTitle= document.getElementById('instruction');
+            if (this.id == "מחקר") {
+              researchOn = !researchOn;
+              if (!planningOn) {
+                titles_text['main_title'][''] = 'כלי לקריאה מחודשת של תל-אביב מעיניהם של דרי הרחוב';
+                titles_text['main_title']['_en'] = 'A tool for re-reading Tel Aviv through the eyes of the homeless';
+                // mainTitle.innerHTML = 'כלי לקריאה מחודשת של תל-אביב מעיניהם של דרי הרחוב';
+                secondaryTitle.style.display = 'block';
+                titles_text['lower_text'][''] = 'המחקר מבוסס על 19 סיפורים אישיים של דרי ודרות רחוב בעיר תל אביב, אשר על מנת להתקיים ולענות על צרכיהם הבסיסיים, נשענים על משאבים בעיר באופן סמוי. אלו, מוצגים לצד שכבות מידע של העיר שנבחנו בהתייחסות לסוגיית דרות הרחוב.';
+                titles_text['lower_text']['_en'] = 'The research is based on 19 personal stories of homeless men and women in the city of Tel Aviv, who, in order to survive and meet their basic needs, rely on resources in the city covertly. These are presented next to information layers of the city that were examined in reference to the issue of street dwellings.';
+                // lowerText.innerHTML = 'המחקר מבוסס על 19 סיפורים אישיים של דרי ודרות רחוב בעיר תל אביב, אשר על מנת להתקיים ולענות על צרכיהם הבסיסיים, נשענים על משאבים בעיר באופן סמוי. אלו, מוצגים לצד שכבות מידע של העיר שנבחנו בהתייחסות לסוגיית דרות הרחוב.';
+                // instructionTitle.style.display = 'none';
+              }
+            }
+            else if (this.id == "תכנון") {
+              planningOn = !planningOn;
+              titles_text['main_title'][''] = 'פריסת מוקדים עירונית המאפשרת קיום חיים בסטטוס המעבר';
+              titles_text['main_title']['_en'] = 'An urban focal point layout that enables life in a transitory status';
+              // mainTitle.innerHTML = 'פריסת מוקדים עירונית המאפשרת קיום חיים בסטטוס המעבר';
+              secondaryTitle.style.display = 'none';
+              titles_text['lower_text'][''] = 'התכנית העירונית פורסת רשת של מוקדים הפועלים יחד על מנת לאפשר קיום עירוני מגוון והבטחה של חיים בכבוד, גם ללא בית קבוע, ובעצם להיות בבית בעיר. הרשת מורכבת ממענה לצרכים בסיסיים ומאפשרת למשתמשים בה אפשרויות בחירה רבות.';
+              titles_text['lower_text']['_en'] = 'The urban plan lays out a network of centers that work together to enable a diverse urban existence and guarantee a life with dignity, even without a permanent home, and basically to be at home in the city. The network responds to basic needs and allows its users many choices.';
+              // lowerText.innerHTML = 'התכנית העירונית פורסת רשת של מוקדים הפועלים יחד על מנת לאפשר קיום עירוני מגוון והבטחה של חיים בכבוד, גם ללא בית קבוע, ובעצם להיות בבית בעיר. הרשת מורכבת ממענה לצרכים בסיסיים ומאפשרת למשתמשים בה אפשרויות בחירה רבות.';
+              // instructionTitle.style.display = 'block';
+              var vis = true;
+              if (!planningOn && !researchOn) {
+                vis = false;
+              }
+              if (!planningOn && researchOn) {
+                titles_text['main_title'][''] = 'כלי לקריאה מחודשת של תל-אביב מעיניהם של דרי הרחוב';
+                titles_text['main_title']['_en'] = 'A tool for re-reading Tel Aviv through the eyes of the homeless';
+                // mainTitle.innerHTML = 'כלי לקריאה מחודשת של תל-אביב מעיניהם של דרי הרחוב';
+                secondaryTitle.style.display = 'block';
+                titles_text['lower_text'][''] = 'המחקר מבוסס על 19 סיפורים אישיים של דרי ודרות רחוב בעיר תל אביב, אשר על מנת להתקיים ולענות על צרכיהם הבסיסיים, נשענים על משאבים בעיר באופן סמוי. אלו, מוצגים לצד שכבות מידע של העיר שנבחנו בהתייחסות לסוגיית דרות הרחוב.';
+                titles_text['lower_text']['_en'] = 'The research is based on 19 personal stories of homeless men and women in the city of Tel Aviv, who, in order to survive and meet their basic needs, rely on resources in the city covertly. These are presented next to information layers of the city that were examined in reference to the issue of street dwellings.';
+                // lowerText.innerHTML = 'המחקר מבוסס על 19 סיפורים אישיים של דרי ודרות רחוב בעיר תל אביב, אשר על מנת להתקיים ולענות על צרכיהם הבסיסיים, נשענים על משאבים בעיר באופן סמוי. אלו, מוצגים לצד שכבות מידע של העיר שנבחנו בהתייחסות לסוגיית דרות הרחוב.';
+                // instructionTitle.style.display = 'none';
+              }
+              
+              for (i = 0; i < startIdx + 1; i++) {
+                const current_layer = collapseOne.children[i].children[0];
+                
+                if (individual_layers.includes(current_layer.id)) {
+                  current_layer.checked = vis;
+                  if (current_layer.id.startsWith("subtitle_"))
+                    continue;
+                  setLayerVis(current_layer, e);
+                }
+              }
+              if (planningOn && researchOn) {
+                var research_box = document.getElementById("מחקר");
+                research_box.checked = false;
+                var evt = document.createEvent("HTMLEvents");
+                evt.initEvent("change", false, true);
+                research_box.dispatchEvent(evt);
+              }
+            }
+            setLanguage(false);
+            for (i = startIdx + 1; i < collapseOne.children.length; i++)
+            {
+              const current_layer = collapseOne.children[i].children[0];
+              
+              if (collapseOne.children[i].id.startsWith("title_"))
+                break;
+              if (current_layer.id == "3D")
+                continue;
+              if (this.checked == false) {
+                if (!individual_layers.includes(current_layer.id) || (!researchOn && !planningOn))
+                  current_layer.checked = false;
+              } else {
+                if (!individual_layers.includes(current_layer.id) || (researchOn || planningOn))
+                  current_layer.checked = true;
+              }
+              if (!current_layer.id.startsWith("subtitle_") && current_layer.id != 'שהייה' && current_layer.id != 'עבודה')
+                setLayerVis(current_layer, e);
+              
+            }
+            
+          };
+
+          var all_title = document.createElement('span');
+          all_title.innerHTML = titleName;
+          all_title.style = "font-size:10.0pt; margin-left:10px; letter-spacing: 0.5px;"
+
+          line_div.appendChild(all_box);
+          line_div.appendChild(all_title);
+          if (titleName == "מחקר") {
+            research.appendChild(line_div);
+          }
+          else {
+            collapseOne.appendChild(line_div);
+          }
+          
+        }
+
+        var subtitleColor = {
+          'שהייה': 'rgb(180, 188, 159)',
+          'עבודה': 'rgb(206, 200, 229)',
+          'לינה': 'rgb(248, 206, 94)',
+          'מזון': 'rgb(202, 55, 53)',
+          'התרעננות': 'rgb(126, 44, 133)',
+          'סיוע': 'rgb(41, 53, 116)'
+        }
+
+        var divNum = 3;
+
+        function createSubTitle(subTitleName, titleName) {
+          if (titleName == "תכנון") {
+            toCheck = false;
+          }
+          var numStr = divNum.toString();
+          divNum++;
+          var accordionDiv = document.createElement('div');
+          accordionDiv.className = 'accordion';
+          accordionDiv.id = 'accordion' + numStr;
+          var accordionItem = document.createElement('div');
+          accordionItem.className = 'accordion-item';
+
+          var accordionHead = document.createElement('h2');
+          accordionHead.className = 'accordion-header';
+          accordionHead.id = 'headingOne' + numStr;
+          var accordionButton = document.createElement('button');
+          accordionButton.className = 'accordion-button2 collapsed';
+          accordionButton.type = 'button';
+          accordionButton.dataset.bsToggle = 'collapse';
+          accordionButton.dataset.bsTarget = '#' + subTitleName + '_' + titleName;
+          accordionButton.ariaExpanded = 'true';
+          accordionButton.ariaControls = subTitleName + '_' + titleName;
+          accordionButton.onclick = function(){accordionClick();};
+          // accordionButton.innerHTML = subTitleName;
+          accordionHead.appendChild(accordionButton);
+          var subTitleDiv = document.createElement('div');
+          subTitleDiv.id = subTitleName + '_' + titleName;
+          subTitleDiv.className = 'accordion-collapse collapse hide';
+          subTitleDiv.setAttribute('aria-labelledby', accordionHead.id);
+          if (titleName == 'מחקר') {
+            subTitleDiv.dataset.parent = '#research';
+          }
+          else {
+            subTitleDiv.dataset.parent = '#planning';
+          }
+          var subTitleCheckBox = addSubTitleToLegend(subTitleName, subTitleDiv);
+          var buttonTitle = document.createElement('span');
+          finalTitle = subTitleName.includes('_') ? subTitleName.replace("_", " ") : subTitleName;
+          buttonTitle.innerHTML = finalTitle;
+          // buttonTitle.style.paddingInline = '10px';
+          buttonTitle.className = 'legend-button-title';
+          var color = subtitleColor[subTitleName];
+          var key = document.createElement('span');
+          key.className = 'legend-key';
+          key.style.backgroundColor = color;
+          key.style.borderRadius = '50%';
+          accordionButton.appendChild(subTitleCheckBox);
+          accordionButton.appendChild(key);
+          accordionButton.appendChild(buttonTitle);
+          accordionItem.appendChild(accordionHead);
+          accordionItem.appendChild(subTitleDiv);
+          accordionDiv.appendChild(accordionItem);
+          var titleDiv = document.getElementById(titlesHebrew[titleName]);
+          titleDiv.appendChild(accordionDiv);
+          return subTitleDiv;
+        }
+
+        function addSubTitleToLegend(subTitleName, accordionItem) {
+          // var line_div = document.createElement('div');
+          // line_div.className = 'accordion-body';
+          // line_div.id = 'subtitle_' + subTitleName;
+          const all_box = document.createElement('input');
+          all_box.type = 'checkbox';
+          all_box.checked = toCheck;
+          all_box.id = subTitleName + '_';
+          all_box.href = '#';
+          all_box.textContent = subTitleName;
+          all_box.className = 'active';
+          // all_box.style = "margin-left:10px;"
+
+          // var startIdx = collapseOne.children.length;
+
+          all_box.onchange = function (e) {
+            for (i = 0; i < accordionItem.children.length; i++)
+            {
+              const current_layer = accordionItem.children[i].children[0];
+              
+              // if (accordionItem.children[i].id.startsWith("title_") || current_layer.style.marginLeft == "10px")
+              //   break;
+              if (this.checked == false) {
+                current_layer.checked = false;
+              } else {
+                current_layer.checked = true;
+              }
+              const clickedLayer = current_layer.textContent;
+              e.preventDefault();
+              e.stopPropagation();
+              
+              const visibility = map.getLayoutProperty(
+                clickedLayer,
+                'visibility'
+              );
+              if (visibility == 'visible' && current_layer.checked == false) {
+                  map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+                  this.className = '';
+                } else {
+                  this.className = 'active';
+                  map.setLayoutProperty(
+                    clickedLayer,
+                    'visibility',
+                    'visible'
+                  );
+                }
+              
+            }
+            
+          };
+
+          // var all_title = document.createElement('span');
+          // all_title.innerHTML = subTitleName;
+          // all_title.style = "font-size:10.0pt; margin-left:10px;"
+          return all_box;
+          // line_div.appendChild(all_box);
+          // line_div.appendChild(all_title);
+          // collapseOne.appendChild(line_div);
+        }
+
+        function addLayerToLegend(layerId, hebrewName, accordionDiv, isSub) {
+          var layerObj = getLayerFromId(layerId);
+          var layer = layerObj.id;
+          layers.push(layer);
+          var color = getLayerColor(layerObj);
+          var layerType = layerObj.type;
+          var item = document.createElement('div');
+          item.id = 'item_' + layerObj.id;
+          item.className = 'accordion-body';
+          var key = document.createElement('span');
+          key.className = 'legend-key';
+          if (Array.isArray(color)) {
+            if (color.length == 3) {
+              key.style.background = 'linear-gradient(90deg, ' + color[0] + ', ' + color[0] + ' 20%, transparent 20%, transparent 40%, ' 
+                                                                                            + color[1] + ' 40%, ' + color[1]
+                                                                                            + ' 60%, transparent 60%, transparent 80%, '
+                                                                                            + color[0] + ' 80%)';
+            }
+            else {
+              key.style.background = 'linear-gradient(90deg, ' + color[0]+ ', ' + color[0] + ' 49%, white, ' + color[1] + ' 51%)';
+            }
+          }
+          else {
+            key.style.backgroundColor = color;
+          }
+          if (layerType == 'circle') {
+            key.style.borderRadius = '50%';
+          }
+          else if (layerType == 'line') {
+            key.style.height = '2px';
+            key.style.verticalAlign = 'middle';
+          }
+          if (layer == 'food-points') {
+            key.style.border = '2px solid black';
+            key.style.borderRadius = '50%';
+          }
+          const link = document.createElement('input');
+          link.type = 'checkbox';
+          link.id = layerObj.id;
+          link.href = '#';
+          link.textContent = layerObj.id;
+          if (isSub)
+            link.style = "margin-left:10px;";
+
+          link.checked = toCheck;
+          link.className = 'active';
+
+          var vis = 'visible';
+          if (layerObj.id == '3D' || !toCheck) {
+            vis = 'none';
+            link.checked = false;
+          }
+            
+          map.setLayoutProperty(
+            link.textContent,
+            'visibility',
+            vis
+          );
+          
+          // Show or hide layer when the toggle is clicked.
+          link.onchange = function (e) {
+            const clickedLayer = this.textContent;
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const visibility = map.getLayoutProperty(
+              clickedLayer,
+              'visibility'
+            );
+            
+            // Toggle layer visibility by changing the layout object's visibility property.
+            if (visibility == 'visible' && link.checked == false) {
+              map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+              this.className = '';
+            } else {
+              this.className = 'active';
+              map.setLayoutProperty(
+                clickedLayer,
+                'visibility',
+                'visible'
+              );
+            }
+          };
+
+          var value = document.createElement('span');
+          value.innerHTML = hebrewName;
+          // value.style = "font-size:10.0pt; letter-spacing: 0.5px;";
+          value.className = 'legend-title';
+
+          item.appendChild(link);
+          item.appendChild(key);
+          item.appendChild(value);
+          accordionDiv.appendChild(item);
+        }
+
+        for (titleName in layers_for_legend) {
+
+          // addTitleToLegend(titleName);
+          for (subTitle in layers_for_legend[titleName]) {
+            if (typeof layers_for_legend[titleName][subTitle] === "object") {
+              var subTitleDiv = createSubTitle(subTitle, titleName);
+              for (obj in layers_for_legend[titleName][subTitle]) {
+                addLayerToLegend(obj, layers_for_legend[titleName][subTitle][obj], subTitleDiv, true);
+              }
+            }
+            else {
+              var accordionDiv = titleName == 'מחקר' ? document.getElementById('research') : document.getElementById('planning');
+              addLayerToLegend(subTitle, layers_for_legend[titleName][subTitle], accordionDiv, false);
+            }
+          }
+        }
+        // Set map language to English
+        //setLanguage(true);
+
+        layers.push('3d-route');
+        layers.push('24h-homeless-route');
+
+        var route_layers = [
+          '3D',
+          'city-border',
+          'light-rail',
+          'metro',
+          'עבודה_',
+          'green areas and parks'
+        ]
+
+        function turnOffAllLayers() {
+          
+          var research_checkbox = document.getElementById('מחקר');
+          var planning_checkbox = document.getElementById('תכנון');
+          if (research_checkbox.checked == true) {
+            research_checkbox.checked = false;
+            var evt = document.createEvent("HTMLEvents");
+            evt.initEvent("change", false, true);
+            research_checkbox.dispatchEvent(evt);
+          }
+          if (planning_checkbox.checked == true) {
+            planning_checkbox.checked = false;
+            var evt = document.createEvent("HTMLEvents");
+            evt.initEvent("change", false, true);
+            planning_checkbox.dispatchEvent(evt);
+          }
+          for (i = 78; i < layers_map.length; i++) {
+            var currentLayer = layers_map[i].id;
+            map.setLayoutProperty(currentLayer, 'visibility', 'none');
+            var currentLayerBox = document.getElementById(currentLayer);
+            if (currentLayerBox != null)
+              currentLayerBox.checked = false;
+          }
+          for (i = 0; i < route_layers.length; i++) {
+            var idx = i;
+            var current_box = document.getElementById(route_layers[i]);
+            current_box.checked = true;
+            var evt = document.createEvent("HTMLEvents");
+            evt.initEvent("change", false, true);
+            current_box.dispatchEvent(evt);
+            i = idx;
+          }
+        }
+
+        function setMapInteractive(isEnable) {
+          if (isEnable) {
+            map.dragPan.enable();
+            map.scrollZoom.enable();
+            map.boxZoom.enable();
+            map.dragRotate.enable();
+            map.keyboard.enable();
+            map.doubleClickZoom.enable();
+          }
+          else {
+            map.dragPan.disable();
+            map.scrollZoom.disable();
+            map.boxZoom.disable();
+            map.dragRotate.disable();
+            map.keyboard.disable();
+            map.doubleClickZoom.disable();
+          }
+        }
+
+        // class HelloWorldControl {
+        //   onAdd(map) {
+        //   this._map = map;
+        //   this._container = document.createElement('div');
+        //   this._container.className = 'mapboxgl-ctrl';
+        //   this._container.textContent = 'Hello, world';
+        //   return this._container;
+        //   }
+          
+        //   onRemove() {
+        //   this._container.parentNode.removeChild(this._container);
+        //   this._map = undefined;
+        //   }
+        // }
+
+        // const myControl = new HelloWorldControl();
+        // map.addControl(myControl, 'top-right');
+        
+        
+
+        class MapboxGLButtonControl {
+          constructor({
+            className = "",
+            title = "",
+            eventHandler = evtHndlr
+          }) {
+            this._className = className;
+            this._title = title;
+            this._eventHandler = eventHandler;
+          }
+
+          onAdd(map) {
+            this._btn = document.createElement("button");
+            this._btn.className = "mapboxgl-ctrl-icon" + " " + this._className;
+            this._btn.type = "button";
+            this._btn.title = this._title;
+            this._btn.onclick = this._eventHandler;
+
+            this._container = document.createElement("div");
+            this._container.className = "mapboxgl-ctrl-group mapboxgl-ctrl";
+            this._container.appendChild(this._btn);
+
+            return this._container;
+          }
+
+          onRemove() {
+            this._container.parentNode.removeChild(this._container);
+            this._map = undefined;
+          }
+        }
+        
+        routeIdsForPopup = {
+          7015: {
+            '': ['לינה, התרעננות ותמיכה', 'מסחר ומגורים', 'הקצאה בקרקע'],
+            '_en': ['Sleeping, refreshment and support', 'Commerce and residence', 'Land allocation'],
+            'layer': "Allocations_all"
+          },
+          2615: {
+            '': ['מזון', 'חומוס גרגר הזהב', 'הסבה'],
+            '_en': ['Food', '"Golden grain" hummus', 'Endorsement'],
+            'layer': "Food_Point_all"
+          },
+          19306: {
+            '': ['התרעננות', 'מכללה לאמנות קלישר', 'תוספת'],
+            '_en': ['Refreshment', 'Kalisher Art School', 'Addition'],
+            'layer': "Refreshment_all"
+          },
+          13479: {
+            '': ['לינה, מזון ותמיכה', 'מבנה נטוש', 'הסבה'],
+            '_en': ['Sleeping, food and support', 'Abandoned building', 'Endorsement'],
+            'layer': "Magen_David_all"
+          },
+          25250: {
+            '': ['סיוע רפואי', 'מרכז קהילתי אריק איינשטיין', 'תוספת'],
+            '_en': ['Medical aid', 'Arik Einstein Community Center', 'Addition'],
+            'layer': "Medical_Treatment_all"
+          }
+        }
+
+        function addPopupToRoute() {
+          map.moveLayer('24h-homeless-route', '3D');
+          map.moveLayer('3d-route', '3D');
+          const features = map.queryRenderedFeatures({layers: ['3d-route']});
+          for (i = 0; i < features.length; i++) {
+            
+            var feature = features[i];
+            var fId = feature.properties['idbinyan'];
+
+            if (fId in routeIdsForPopup && !inRouteIds.includes(fId)) {
+              var imageToOpen = routeIdsForPopup[fId]['layer'];
+              var height = feature.properties['govasimple'];
+              
+              var offset = -height - 50;
+              if (fId == 2615) {
+                offset -= 20;
+              }
+              else if (fId == 7015) {
+                offset += 30;
+              }
+              else if (fId == 13479 || fId == 25250 || fId == 19306) {
+                offset += 50;
+              }
+              var popup = new mapboxgl.Popup({ offset: [0, offset], closeOnMove: false, closeButton: false, closeOnClick: false, className: "routePopup", anchor: "bottom"});
+              var title = routeIdsForPopup[fId][language][0];
+              var subtitle = routeIdsForPopup[fId][language][1];
+              var finaltitle = routeIdsForPopup[fId][language][2];
+              var htmlText = '<div id="popupButton" class="routePopup" onclick=openRouteImage("' + imageToOpen + '")>' +
+                              '<h3><b>' +
+                              title +
+                              '</b></h3>' +
+                              '<h3 class="h3_1">' +
+                              subtitle +
+                              '</h3>' +
+                              '<h3 class="h3_1">' +
+                              finaltitle +
+                              '</h3></div>';
+              // else if (fId == 13479) {
+              //   htmlText = '<div id="popupButton" class="routePopup" onclick=openImage("01_Building_Photo")>' +
+              //               '<h3><b>' +
+              //               title +
+              //               '</b></h3>' +
+              //               '<h3 class="h3_1">' +
+              //               subtitle +
+              //               '</h3>' +
+              //               '<h3 class="h3_1">' +
+              //               finaltitle +
+              //               '</h3></div>';
+              // }
+              // else {
+              //   htmlText ='<div id="popupButton" class="routePopup">' +
+              //             '<h3><b>' +
+              //             title +
+              //             '</b></h3>' +
+              //             '<h3 class="h3_1">' +
+              //             subtitle +
+              //             '</h3>' +
+              //             '<h3 class="h3_1">' +
+              //             finaltitle +
+              //             '</h3></div>';
+              // }
+              if (fId == 25250) {
+                popup.setMaxWidth('260px');
+              }
+              else {
+                popup.setMaxWidth('240px');
+              }
+              
+              var coordinates = feature.geometry.coordinates.slice();
+              
+              coordinates = new L.Polygon(coordinates).getBounds().getCenter();
+              popup.setLngLat([coordinates['lat'], coordinates['lng']])
+              .setHTML(htmlText)
+              .addTo(map);
+              routePopups.push(popup);
+              inRouteIds.push(fId);
+              
+            }
+          }
+          // var popupDivs = document.querySelectorAll("[id='popupButton']");
+          // for (i = 0; i < popupDivs.length; i++) {
+          //   popupDivs[i].addEventListener('mouseenter', function(e) {
+          //     console.log('in route popup!!!!');
+          //     map.getCanvas().style.cursor = 'pointer';
+          //   });
+          //   popupDivs[i].addEventListener('mouseleave', function(e) {
+          //     map.getCanvas().style.cursor = '';
+          //   });
+          // }
+        }
+        
+        function accordionCollapse() {
+          var mainAccordionButton = document.getElementById('main_legend_button');
+          mainAccordionButton.className = 'accordion-button collapsed';
+          mainAccordionButton.ariaExpanded = 'false';
+          collapseOne.className = 'accordion-collapse collapse hide';
+        }
+
+        function accordionOpen() {
+          var mainAccordionButton = document.getElementById('main_legend_button');
+          mainAccordionButton.className = 'accordion-button';
+          mainAccordionButton.ariaExpanded = 'true';
+          collapseOne.className = 'accordion-collapse collapse show';
+        }
+
+        function routeHandler(event) {
+          turnOffAllLayers();
+          setMapInteractive(false);
+          // Collapse legend
+          accordionCollapse();
+          // Turn ON route layers
+          setRouteVis('visible');
+          document.getElementById("main_title").style.display = "none";
+          document.getElementById("secondary_title").style.display = "none";
+
+          // center_pos = [34.771146978793695, 32.0639430515279]; // Previous position -- return if needed!!!
+          center_pos = [34.771516038147865, 32.06527406203743];
+          formToOpen = -1;
+          flyToFunc(center_pos, 15.6, 62, -45, false);
+          isRouteOn = true;
+          mapPopups = false;
+          // addPopupToRoute();
+
+        }
+
+        function toolsHandler(event) {
+          var toolBox = document.getElementById('tool_box');
+          var vis = toolBox.style.display;
+          document.getElementById('matrix').style.display = 'none';
+          vis = vis == 'none' ? 'block' : 'none';
+          toolBox.style.display = vis;
+        }
+
+        function infoHandler(event) {
+          var infoText = document.getElementById('lower_text');
+          var vis = infoText.style.display;
+          vis = vis == 'none' ? 'block' : 'none';
+          infoText.style.display = vis;
+        }
+
+        function matrixHandler(event) {
+          var matrix = document.getElementById('matrix');
+          var matrixVis = matrix.style.display;
+          document.getElementById('tool_box').style.display = 'none';
+          matrixVis = matrixVis == 'none' ? 'block' : 'none';
+          matrix.style.display = matrixVis;
+
+          var secondary = document.getElementById('secondary_title');
+          var secondaryVis = secondary.style.display;
+          secondaryVis = secondaryVis == 'none' ? 'block' : 'none';
+          secondary.style.display = secondaryVis;
+        }
+
+        
+
+        function langHandler(event) {
+          // var current_lang = map.getLayoutProperty('settlement-major-label', 'text-field')[1];
+          // language = (current_lang == 'name_local' || current_lang == 'name') ? '_en' : '';
+          
+          language = language == '_en' ? '' : '_en';
+          setLanguage(true);
+          
+          // updatePositions();
+        }
+
+        var route_control = new MapboxGLButtonControl({
+          className: "mapbox-gl-draw_line",
+          title: "לחץ לליווי דר רחוב ביומו בפריסה העירונית",
+          eventHandler: routeHandler
+        });
+        controls.push(route_control);
+        map.addControl(route_control, 'top-right');
+
+        var tools_control = new MapboxGLButtonControl({
+          className: "mapbox-gl-tools",
+          title: "ארגז כלים",
+          eventHandler: toolsHandler
+        });
+        controls.push(tools_control);
+        map.addControl(tools_control, 'top-right');
+
+        const ctrlInfo = new MapboxGLButtonControl({
+          className: "mapbox-gl-info",
+          title: "מידע",
+          eventHandler: infoHandler
+        });
+
+        map.addControl(ctrlInfo, 'bottom-right');
+
+        var matrix_control = new MapboxGLButtonControl({
+          className: "mapbox-gl-matrix",
+          title: "מטריצה",
+          eventHandler: matrixHandler
+        });
+        controls.push(matrix_control);
+        map.addControl(matrix_control, 'top-right');
+
+        const ctrlLanguage = new MapboxGLButtonControl({
+          className: "mapbox-gl-language",
+          title: "Change language",
+          eventHandler: langHandler
+        });
+
+        map.addControl(ctrlLanguage, 'bottom-left');
+
+
+        // var line_div = document.createElement('div');
+        // line_div.className = 'accordion-body';
+        // const all_box = document.createElement('input');
+        // all_box.type = 'checkbox';
+        // all_box.checked = true;
+        // all_box.id = 'all_box';
+        // all_box.href = '#';
+        // all_box.textContent = 'all_box';
+        // all_box.className = 'active';
+
+        // all_box.onchange = function (e) {
+        //   for (i = 1; i < collapseOne.children.length; i++)
+        //   {
+        //     const current_layer = collapseOne.children[i].children[0];
+        //     if (this.checked == false) {
+        //       current_layer.checked = false;
+        //     } else {
+        //       current_layer.checked = true;
+        //     }
+        //     const clickedLayer = current_layer.textContent;
+        //     e.preventDefault();
+        //     e.stopPropagation();
+            
+        //     const visibility = map.getLayoutProperty(
+        //       clickedLayer,
+        //       'visibility'
+        //     );
+        //     if (visibility == 'visible' && current_layer.checked == false) {
+        //         map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+        //         this.className = '';
+        //       } else {
+        //         this.className = 'active';
+        //         map.setLayoutProperty(
+        //           clickedLayer,
+        //           'visibility',
+        //           'visible'
+        //         );
+        //       }
+            
+        //   }
+          
+        // };
+
+        // var all_title = document.createElement('span');
+        // all_title.innerHTML = 'כל השכבות';
+        // all_title.style = "font-size:10.0pt; margin-left:10px;"
+
+        // line_div.appendChild(all_box);
+        // line_div.appendChild(all_title);
+        // collapseOne.appendChild(line_div);
+
+        function getLayerColor(layer) {
+          // console.log(layer);
+          switch (layer.type) {
+            case "line":
+              var lineColor = "hsl(0, 100%, 0%)";
+              if ("paint" in layer) {
+                if ("line-color" in layer.paint) {
+                  var lineColor = layer.paint["line-color"];
+                  if (Array.isArray(lineColor)) {
+                    var innerLineColor = lineColor[6];
+                    if (Array.isArray(innerLineColor)) {
+                      if ('line-dasharray' in layer.paint) {
+                        return [innerLineColor[3], innerLineColor[4], "true"];
+                      }
+                      return [innerLineColor[3], innerLineColor[4]];
+                    }
+                    return innerLineColor;
+                  }
+                    
+                }
+              }
+              return lineColor;
+            case "fill":
+              var fillColor = "hsl(0, 100%, 0%)";
+              var fillPaint = layer.paint;
+              if ("fill-color" in fillPaint) {
+                fillColor = fillPaint["fill-color"];
+              }
+              else if ("fill-outline-color" in fillPaint) {
+                fillColor = fillPaint["fill-outline-color"];
+              }
+              if (Array.isArray(fillColor)) {
+                var innerFillColor = fillColor[6];
+                if (Array.isArray(innerFillColor))
+                  return [innerFillColor[3], innerFillColor[4]];
+                return innerFillColor;
+              }
+              return fillColor;
+            case "circle":
+              var circleColor = "hsl(0, 100%, 0%)";
+              if ("paint" in layer) {
+                var circlePaint = layer.paint;
+                if ("circle-color" in circlePaint) {
+                  circleColor = circlePaint["circle-color"];
+                  if (Array.isArray(circleColor))
+                    return circleColor[5];
+                }
+                else if ("circle-stroke-color" in circlePaint){
+                  circleColor = circlePaint["circle-stroke-color"];
+                }
+                if (Array.isArray(circleColor))
+                  circleColor = circleColor[6];
+              }
+              return circleColor;
+              
+            case "fill-extrusion":
+              return layer.paint["fill-extrusion-color"];
+          }
+        }
+
+        var notInLegend = [
+          'back-yard-stroke',
+          'front-yard-stroke'
+        ];
+
+        var layerNames = {
+          'sleeping-corners': {
+            '': 'מרחבי לינה',
+            '_en': 'Sleeping areas'
+          },
+          'formal': {
+            '': 'מוסד פורמלי',
+            '_en': 'Formal Institution'
+          },
+          'city-border': {
+            '': 'גבול העיר',
+            '_en': 'City border'
+          },
+          'green areas and parks': {
+            '': 'גינות',
+            '_en': 'Parks'
+          },
+          'front yard and back yard': {
+            '': 'חצר קדמית ואחורית',
+            '_en': 'Front and Back yard'
+          },
+          'parking': {
+            '': 'חניונים',
+            '_en': 'Parking'
+          },
+          'light-rail': {
+            '': 'תוואי הרכבת הקלה',
+            '_en': 'Light rail route'
+          },
+          '3D': {
+            '': '3D',
+            '_en': '3D'
+          },
+          'squares': {
+            '': 'כיכרות',
+            '_en': 'Squares'
+          },
+          'beaches-wardrobes': {
+            '': 'מלתחות חוף',
+            '_en': 'Beaches wardrobes'
+          },
+          'mikvahs': {
+            '': 'מקוואות',
+            '_en': 'Mikvahs'
+          },
+          'sport': {
+            '': 'מגרשי ספורט',
+            '_en': 'Sport fields'
+          },
+          'community centers': {
+            '': 'מרכזים קהילתיים',
+            '_en': 'Community centers'
+          },
+          'metro': {
+            '': 'מטרו',
+            '_en': 'Metro'
+          },
+          'abandoned-buildings-sleeping': {
+            '': 'מבנים נטושים - שינה',
+            '_en': 'Abandoned buildings - Sleeping'
+          },
+          'abandoned-buildings-resturants': {
+            '': 'מבנים נטושים - מסעדות',
+            '_en': 'Abandoned buildings - Resturants'
+          },
+          'abandoned-buildings': {
+            '': 'מבנים נטושים',
+            '_en': 'Abandoned buildings'
+          },
+          'abandoned-buildings-ground-floors': {
+            '': 'קומות קרקע',
+            '_en': 'Abandoned buildings - Ground floors'
+          },
+          'air-corridors': {
+            '': 'איוורור',
+            '_en': 'Air Corridors'
+          },
+          'food-exist': {
+            '': 'מזון',
+            '_en': 'Food'
+          },
+          'stay-points-exist': {
+            '': 'שהייה',
+            '_en': 'Stay'
+          }
+        }
+
+        // create legend
+        
+
+
+        // for (i = 78; i < layers_map.length; i++) {
+        //   if (!notInLegend.includes(layers_map[i].id)) {
+        //     layers.push(layers_map[i].id);
+        //     var layer = layers_map[i].id;
+        //     var color = getLayerColor(layers_map[i]);
+        //     var layerType = layers_map[i].type;
+        //     var item = document.createElement('div');
+        //     item.id = 'item_' + layers_map[i].id;
+        //     item.className = 'accordion-body';
+        //     var key = document.createElement('span');
+        //     key.className = 'legend-key';
+        //     key.style.backgroundColor = color;
+        //     if (layerType == 'circle') {
+        //       key.style.borderRadius = '50%';
+        //     }
+        //     else if (layerType == 'line') {
+        //       key.style.height = '2px';
+        //       key.style.verticalAlign = 'middle';
+        //     }
+              
+        //     const link = document.createElement('input');
+        //     link.type = 'checkbox';
+        //     link.id = layers_map[i].id;
+        //     link.href = '#';
+        //     link.textContent = layers_map[i].id;
+        //     link.style = "margin-left:10px;"
+
+        //     link.checked = true;
+        //     link.className = 'active';
+
+        //     var vis = 'visible';
+        //     if (layers_map[i].id == '3D') {
+        //       vis = 'none';
+        //       link.checked = false;
+        //     }
+              
+        //     map.setLayoutProperty(
+        //       link.textContent,
+        //       'visibility',
+        //       vis
+        //     );
+            
+        //     // Show or hide layer when the toggle is clicked.
+        //     link.onchange = function (e) {
+        //       const clickedLayer = this.textContent;
+        //       e.preventDefault();
+        //       e.stopPropagation();
+              
+        //       const visibility = map.getLayoutProperty(
+        //         clickedLayer,
+        //         'visibility'
+        //       );
+              
+        //       // Toggle layer visibility by changing the layout object's visibility property.
+        //       if (visibility == 'visible' && link.checked == false) {
+        //         map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+        //         this.className = '';
+        //       } else {
+        //         this.className = 'active';
+        //         map.setLayoutProperty(
+        //           clickedLayer,
+        //           'visibility',
+        //           'visible'
+        //         );
+        //       }
+        //     };
+
+        //     var value = document.createElement('span');
+        //     value.innerHTML = layerHebrewNames[layer];
+        //     value.style = "font-size:10.0pt;"
+
+        //     item.appendChild(link);
+        //     item.appendChild(key);
+        //     item.appendChild(value);
+        //     collapseOne.appendChild(item);
+        //   }
+        // }
+
+        map.on('moveend', function(e){
+          if(flying) {
+            openForm(formToOpen);
+            if (map.getLayoutProperty('3d-route', 'visibility') == 'visible')
+              addPopupToRoute();
+            else if (isRouteOn) {
+              for (i = 0; i < collapseOne.children.length; i++) {
+                var currentTitle = collapseOne.children[i];
+                var current_box = currentTitle.children[0];
+                if (currentTitle.id == 'title_תכנון') {
+                    current_box.checked = true;
+                    var evt = document.createEvent("HTMLEvents");
+                    evt.initEvent("change", false, true);
+                    current_box.dispatchEvent(evt);
+                }
+              }
+              isRouteOn = false;
+            }
+            map.fire('flyend');
+          }
+        });
+        
+        map.on('flystart', function(){
+          flying = true;
+        });
+        map.on('flyend', function(){
+          flying = false;
+        });
+
+        function flyToFunc(pos, zoomLevel, pitchLevel, bearingLevel, is3D) {
+          closeForm();
+          for (i = 0; i < collapseOne.children.length; i++) {
+            if (collapseOne.children[i].innerText == '3D' && is3D) {
+              collapseOne.children[i].children[0].checked = true;
+            }
+            map.setLayoutProperty(
+              '3D',
+              'visibility',
+              'visible'
+            );
+            
+          }
+          map.flyTo({
+            center: pos,
+            zoom: zoomLevel,
+            bearing: bearingLevel,
+            pitch: pitchLevel,
+            
+            speed: 0.3, 
+            curve: 1, 
+            
+            easing: (t) => t,
+            
+            essential: true
+          });
+          map.fire('flystart');
+        }
+
+        function updateTextDiv(divId, properties, text="") {
+
+          var textForm = document.getElementById(divId).querySelector('#text_form');
+          if (textForm != undefined) {
+            if (text == "") {
+              var name = document.createElement('h3');
+              var name_title = language == '_en' ? 'Name' : 'שם';
+              var lang = language == '_en' ? language : '_he';
+              name.innerHTML = name_title + '<br><b>' +
+                                properties["name" + lang] +
+                                '</b></br>';
+              var sleeping = document.createElement('h3');
+              var sleeping_title = language == '_en' ? 'Sleeping area' : 'מרחב לינה';
+              sleeping.innerHTML = sleeping_title + '<br><b>' +
+                                properties["sleeping corner" + language] +
+                                '</b></br>';
+              var description = document.createElement('h3');
+              description.innerHTML = '<b>' + properties["description" + language] + '</b>';
+              if (textForm.children.length > 0) {
+                textForm.replaceChild(name, textForm.children[0]);
+                textForm.replaceChild(sleeping, textForm.children[1]);
+                textForm.replaceChild(description, textForm.children[2]);
+              }
+              else {
+                textForm.appendChild(name);
+                textForm.appendChild(sleeping);
+                textForm.appendChild(description);
+              }
+            }
+            else {
+              var title = document.createElement('h3');
+              title.innerHTML = text;
+              if (textForm.children.length > 0) {
+                textForm.replaceChild(title, textForm.children[0]);
+              }
+              else {
+                textForm.appendChild(title);
+              }
+            }
+          }
+        }
+        
+        map.on('click', (e) => {
+          console.log(e.lngLat);
+          console.log("Center:\n");
+          console.log(map.getCenter());
+        });
+
+        for (i = 0; i < layers.length; i++) {
+          map.on('click', layers[i], (e) => {
+            // console.log(e.features[0].layer['id']);
+            var prop = e.features[0].properties["name"];
+            var idsToPrint = ['3D', '3d route'];
+            if (idsToPrint.includes(e.features[0].layer['id'])) {
+              console.log(e.features[0].properties);
+            }
+            // console.log(prop);
+            if (prop in formIdx) {
+              
+              if (e.features[0].layer['id'] == 'sleeping-corners') {
+                updateTextDiv(forms[formIdx[prop]], e.features[0].properties);
+              }
+              else if (prop == 'Pasta Basta') {
+                var text_to_update = language == '_en' ? 'Stall manager in the Carmel Market' : 'מנהל בסטה בשוק הכרמל';
+                updateTextDiv(forms[formIdx[prop]], e.features[0].properties, text_to_update);
+              }
+              else if (prop == 'dizengoff Bottles') {
+                var text_to_update = language == '_en' ? 'Strategic Axis - Collecting bottles' : 'ציר אסטרטגי - איסוף בקבוקים';
+                updateTextDiv(forms[formIdx[prop]], e.features[0].properties, text_to_update);
+              }
+              if (prop == "Dizengoff  Square" || (prop == "market" && e.features[0].layer['id'] == 'food-exist')) {
+                dizengoffOn = true;
+                flyToFunc(e.features[0].geometry.coordinates, 16, 60, 0, true);
+                formToOpen = formIdx[prop];
+              }
+              else if (!(prop == 'market') && !dizengoffOn) {
+                openForm(formIdx[prop]);
+              }
+            }
+            else if (e.features[0].layer['id'] == 'sleeping-corners') {
+              updateTextDiv('only_text', e.features[0].properties);
+              openForm(formIdx['only_text']);
+            }
+          });
+  
+          map.on('mouseenter', layers[i], () => {
+            if (!isRouteOn)
+              map.getCanvas().style.cursor = 'pointer';
+          });
+          
+          map.on('mouseleave', layers[i], () => {
+            map.getCanvas().style.cursor = '';
+          });
+        }
+
+        function removeMapLayer(layerId) {
+          for (i = 0; i < collapseOne.children.length; i++) {
+            if (collapseOne.children[i].children[0].id == layerId) {
+              collapseOne.children[i].remove();
+              map.getLayer(layerId).visibility = 'none';
+            }
+          }
+        }
+        
+      // Remove when needed!!!
+      // removeMapLayer('night-policy-in-leisure-areas');
+
+      var noPopupLayers = [
+        '3D',
+        'back-yard',
+        'front-yard',
+        'business',
+        'parking',
+        'green-areas-and-parks',
+        '3d-route',
+        '24h-homeless-route',
+        'food-points'
+      ];
+
+      var popupLabels = {
+        '620-abandoned buildings': {
+          '': ['לינה', 'מבנה נטוש'],
+          '_en': ['Stay', 'Abandoned building']
+        },
+        '650-ground-floors': {
+          '': ['לינה', 'קומת קרקע'],
+          '_en': ['Stay', 'Ground floor']
+        },
+        'mikvahs': {
+          '': ['התרעננות', 'מקווה'],
+          '_en': ['Refreshment', 'Mikvah']
+        },
+        'beaches-wardrobes': {
+          '': ['התרעננות'],
+          '_en': ['Refreshment']
+        },
+        'sport': {
+          '': ['התרעננות', 'מרכז ספורט'],
+          '_en': ['Refreshment', 'Sport center']
+        },
+        'abandoned-buildings-resturants': {
+          '': ['מזון', 'מבנה נטוש'],
+          '_en': ['Food', 'Abandoned building']
+        },
+        'green areas and parks': {
+          '': ['שהייה', 'גינות'],
+          '_en': ['Stay', 'Parks']
+        },
+        'squares': {
+          '': ['שהייה', 'כיכרות'],
+          '_en': ['Stay', 'Squares']
+        },
+        'food-density': {
+          '': ['מזון', 'עמדת חלוקה'],
+          '_en': ['Food', 'Distribution Station']
+        },
+        'food-planning': {
+          '': ['מזון', 'מבנה נטוש'],
+          '_en': ['Food', 'Abandoned building']
+        },
+        'community centers': {
+          '': ['סיוע רפואי', 'מרכזים קהילתיים'],
+          '_en': ['Medical aid', 'Community Centers']
+        },
+        '80-support-ground-floor': {
+          '': ['צוות תומך', 'קומות קרקע'],
+          '_en': ['Support team', 'Ground floor']
+        },
+        '50-refreshment ground': {
+          '': ['התרעננות', 'קומת קרקע'],
+          '_en': ['Refreshment', 'Ground floor']
+        }
+      }
+
+      function hoverPopupMove(popup) {
+        map.on('mousemove', function (e) {
+          //console.log('Before: ' + popup.options.className);
+          if (language == '_en') {
+            var classToRemove = 'mapboxgl-popup';
+            var classToAdd = 'mapboxgl-popup_en';
+          }
+          else {
+            var classToRemove = 'mapboxgl-popup_en';
+            var classToAdd = 'mapboxgl-popup';
+          }
+          //console.log('After: ' + popup.options.className);
+          var features = map.queryRenderedFeatures(e.point, {
+            layers: layers
+          });
+          if (!features.length) {
+            return;
+          }
+          var feature = features[0];
+          var layerId = feature.layer.id;
+          if (!(noPopupLayers.includes(layerId)) && mapPopups) {
+            var propertyLang = language == '_en' ? 'name_en' : 'name_he';
+            var title = feature.properties[propertyLang] != undefined ? feature.properties[propertyLang] : layerNames[layerId][language];
+            var htmlText = '<h3 class="h3_1"><b>' +
+                            title +
+                            '</b></h3>';
+            if (layerId == 'sleeping-corners') {
+              var nameTitle = language == '_en' ? 'Name' : 'שם';
+              var sleepingTitle = language == '_en' ? 'Sleeping area' : 'מרחב לינה';
+
+              htmlText =  '<h3 class="h3_2">' + nameTitle +
+                          '<br><b>' +
+                          feature.properties[propertyLang] +
+                          '</b></br></h3>' +
+                          '<h3 class="h3_2">' + sleepingTitle +
+                          '<br><b>' +
+                          feature.properties["sleeping corner" + language] +
+                          '</b></br></h3>' +
+                          '<h3 class="h3_1"><b>' +
+                          feature.properties["description" + language] +
+                          '</b></h3>';
+              popup.setMaxWidth('240px');
+            }
+            else if (layerId == 'food-exist' || layerId == 'stay-points-exist' || layerId == 'formal') {
+              title = language == '_en' ? feature.properties['name'] : feature.properties['name_he'];
+              htmlText = '<h3 class="h3_3">' +
+                          layerNames[layerId][language] +
+                          '</h3><h3 class="h3_1">' +
+                          title +
+                          '</h3>';
+              popup.setMaxWidth('240px');
+            }
+            else if (layerId == 'front yard and back yard') {
+              if (language == '_en') {
+                title = feature.properties["name"] == 'back' ? 'Back yard' : 'Front yard';  
+              }
+              else {
+                title = feature.properties["name"] == 'back' ? 'חצר אחורית' : 'חצר קדמית';
+              }
+              htmlText = '<h3 class="h3_1"><b>' +
+                            title +
+                            '</b></h3>';
+            }
+            else if (layerId == 'strategic-axes' && "tsug" in feature.properties) {
+              var innerTitle = language == '_en' ? 'Opening hours' : 'שעות פעילות';
+              htmlText =  '<h3><b>' +
+                          feature.properties[propertyLang] +
+                          '</b></h3>' +
+                          '<h3 class="h3_2">' + innerTitle +
+                          '<br><b>' +
+                          feature.properties["tsug" + language] +
+                          '</b></br></h3>';
+              popup.setMaxWidth('240px');
+            }
+            else if (layerId in popupLabels) {
+              title = popupLabels[layerId][language][0];
+              var content = popupLabels[layerId][language].length == 2 ? popupLabels[layerId][language][1] : feature.properties[propertyLang];
+              htmlText =  '<h3 class="h3_3">' +
+                          title +
+                          '</h3><h3 class="h3_1">' +
+                          content +
+                          '</h3>';
+            }
+            popup.setLngLat(e.lngLat)
+            .setHTML(htmlText)
+            .removeClassName(classToRemove)
+            .addClassName(classToAdd)
+            .addTo(map);
+          }
+          else {
+            popup.remove();
+          }
+        });
+        map.on('mouseleave', function(e) {
+          popup.remove();
+        });
+      }
+      
+      var popup = new mapboxgl.Popup({ offset: [0, -15], closeOnMove: true, closeButton: false });
+      hoverPopupMove(popup);
+
+      });
+    </script>
+  </body>
+</html>

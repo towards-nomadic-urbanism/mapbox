@@ -1,0 +1,149 @@
+<body>
+
+<script>
+    function createFullImageSeries(imgId, nextForm, previousForm, image_list, folder_name) {
+        var divItem = document.createElement('div');
+        divItem.className = 'full-image';
+        divItem.style.opacity = '100%';
+        divItem.id = imgId;
+        document.body.appendChild(divItem);
+        // Close Button
+        var closeButton = document.createElement('button');
+        closeButton.type = 'button';
+        closeButton.className = 'btn btn-outline-dark';
+        closeButton.id = 'close_';
+        closeButton.onclick = function(){closeAllImages(image_list);};
+        closeButton.innerHTML = 'x';
+        // Arrow
+        var arrowButton = document.createElement('button');
+        arrowButton.className = 'button';
+        arrowButton.onclick = function() {changeSource(imgId, nextForm);};
+        var innerButtonDiv = document.createElement('div');
+        innerButtonDiv.className = 'button__arrow button__arrow--left';
+        arrowButton.appendChild(innerButtonDiv);
+        // Right Arrow
+        var rightArrowButton = document.createElement('button');
+        rightArrowButton.className = 'button1';
+        rightArrowButton.onclick = function() {changeSource(imgId, previousForm);};
+        var innerRightButtonDiv = document.createElement('div');
+        innerRightButtonDiv.className = 'button__arrow button__arrow--right';
+        rightArrowButton.appendChild(innerRightButtonDiv);
+        // Adobe
+        var innerDiv = document.createElement('div');
+        innerDiv.id = imgId + "_in";
+        var firstScript = document.createElement('script');
+        firstScript.src = "https://documentcloud.adobe.com/view-sdk/main.js";
+        var secondScript = document.createElement('script');
+        secondScript.type = "text/javascript";
+        secondScript.innerHTML = "document.addEventListener(\"adobe_dc_view_sdk.ready\", function(){ " +
+            "var adobeDCView = new AdobeDC.View({clientId: \"9029a3f828a14ab9b10c9b799a7981d8\", divId: \"" + innerDiv.id + "\"});" +
+            "adobeDCView.previewFile({" +
+            "content:{location: {url: \"https://studio-project-mid.github.io/mapbox/images/final/Planning/" + folder_name + '/' + imgId + ".pdf\"}}," +
+            "metaData:{fileName: \" \"}" +
+            "}, {embedMode: \"SIZED_CONTAINER\", showDownloadPDF: false, showPrintPDF: false, showPageControls: false, showAnnotationTools: false});" +
+        "});";
+        divItem.appendChild(closeButton);
+        divItem.appendChild(arrowButton);
+        divItem.appendChild(rightArrowButton);
+        divItem.appendChild(innerDiv);
+        divItem.appendChild(firstScript);
+        divItem.appendChild(secondScript);
+    }
+
+    var magen_david_list = [
+    'Text_Magen_David',
+    'Magen_David_Context',
+    'Magen_David_Movment_Diagram',
+    'Plans_00',
+    'Plans_01',
+    'Plans_02',
+    'Plans_03',
+    'Magen_David_Section',
+    'Mabat_Bedroom_Materials',
+    'Magen_David'
+    ];
+
+    var allocations_list = [
+    'Text',
+    'Allocations_Context',
+    'Ground_Floors_all',
+    'Ground_Floors_Zoom_in',
+    'Ground_Floors_Zoom_in_02',
+    'Allocations_Section',
+    'Allocations'
+    ];
+
+    var food_point_list = [
+    'Text_food_point',
+    'Food_Point_Context',
+    'Food_Point_Mabat',
+    'Ground_Floor',
+    'First_Floor',
+    'Food_Point_Perspective_Section',
+    'Food_Point'
+    ];
+
+    var medical_treatment_list = [
+    'Medical_Treatment_Text',  
+    'Medical_Treatment_Context',
+    'Medical_Treatment_Elements',
+    'Ground_Plan',
+    'Ground_Plan_zoom_in',
+    'Medical_Treatment_Section',
+    'Medical_Treatment'
+    ];
+
+    var refreshment_list = [
+    'Refreshmen_Text',  
+    'Refreshment_point_Context',
+    'Refreshment_Elements',
+    'Ground_plan',
+    'Ground_plan_zoom_in',
+    'Refreshment_Section',
+    'Refreshment'
+    ];
+
+    var image_lists_for_planning = [
+    magen_david_list,
+    allocations_list,
+    food_point_list,
+    medical_treatment_list,
+    refreshment_list
+    ];
+
+    function addDocsToRoute(){
+        for (j = 0; j < image_lists_for_planning.length; j++) {
+            var folderSize = image_lists_for_planning[j].length;
+            var folderName = image_lists_for_planning[j][folderSize - 1];
+            for (i = 0; i < folderSize - 1; i++) {
+                var imgId = image_lists_for_planning[j][i];
+                var nextForm = i == image_lists_for_planning[j].length - 1 ? image_lists_for_planning[j][0] : image_lists_for_planning[j][i + 1];
+                var previousForm = i == 0 ? image_lists_for_planning[j][image_lists_for_planning[j].length - 1] : image_lists_for_planning[j][i - 1];
+                createFullImageSeries(imgId, nextForm, previousForm, image_lists_for_planning[j], folderName);
+            }
+        }
+    }
+
+    addDocsToRoute();
+    document.getElementById('Refreshmen_Text').style.display = 'block';
+
+    // function addDocsToRoute(image_list) {
+    // var folderSize = image_list.length;
+    // var folderName = image_list[folderSize - 1];
+    // for (i = 0; i < folderSize - 1; i++) {
+    //     var imgId = image_list[i];
+    //     var nextForm = i == image_list.length - 1 ? image_list[0] : image_list[i + 1];
+    //     var previousForm = i == 0 ? image_list[image_list.length - 1] : image_list[i - 1];
+    //     createFullImageSeries(imgId, nextForm, previousForm, image_list, folderName);
+    // } 
+    // }
+
+    // function openRouteForm(image_list_str) {
+    // image_list = eval(image_list_str);
+    // addDocsToRoute(image_list);
+    // document.getElementById(image_list[0]).style.display = 'block';
+    // }
+
+
+</script>
+</body>
