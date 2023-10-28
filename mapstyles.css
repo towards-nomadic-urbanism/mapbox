@@ -602,6 +602,22 @@ body {
     letter-spacing: 0.5px;
     cursor: pointer;
   }
+
+  .routePopup_en .mapboxgl-popup-content {
+    width: 165px;
+    height: 100px;
+    background-color: black;
+    opacity: 50%;
+    line-height: 0.5;
+    font-family: 'Assistant';
+    text-align: center;
+    vertical-align: middle;
+    display: inline-block;
+    direction: rtl;
+    padding-bottom: 10px;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+  }
   
   .mapboxgl-popup-content h3.h3_1{
     color: white;
@@ -625,6 +641,24 @@ body {
   }
 
   .routePopup .mapboxgl-popup-content b{
+    color: white;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    font-size: 1.1em;
+  }
+
+  .routePopup_en .mapboxgl-popup-content h3{
+    color: white;
+    font-weight: bolder;
+    letter-spacing: 0.5px;
+  }
+
+  .routePopup_en .mapboxgl-popup-content h3.h3_1{
+    color: white;
+    letter-spacing: 0.5px;
+  }
+
+  .routePopup_en .mapboxgl-popup-content b{
     color: white;
     font-weight: 900;
     letter-spacing: 0.5px;

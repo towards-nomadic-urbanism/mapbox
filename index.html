@@ -23,7 +23,7 @@
       'Gagon_Women',
       'Transition Apartment',
       "Hygiene Center",
-      "The Platform",
+      "HaRazif - Homeless unit",
       "Issa",
       "Dirty Burger",
       "Synagogue Beit El",
@@ -58,11 +58,11 @@
     ];
 
     var formIdx = {
-      '"Lasova"_Gagon_Addicts': 0,
-      '"Lasova"_Gagon_Women': 1,
-      '"Lasova"_Transition Apartment': 2,
+      'Men shelter': 0,
+      'Women shelter': 1,
+      'Men transfer apartment': 2,
       "Hygiene Center": 3,
-      "The Platform": 4,
+      "HaRazif - Homeless unit": 4,
       "Issa": 5,
       "Dirty Burger": 6,
       "Synagogue Beit El": 7,
@@ -685,12 +685,20 @@
         src="images/Dirat Maavar.pdf">
       </embed>
     </div>
-    <audio controls id="Hygiene Center">
-      <source src="audio/חביב_מרכז היגיינה.m4a" type="audio/wav">
-    </audio>
-    <audio controls id="The Platform">
-      <source src="audio/יואב_יחידת דרי רחוב.mp3" type="audio/mp3">
-    </audio>
+    <div class="form-popup-right" id="Hygiene Center">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeForm()'>x</button>
+      <form action="/action_page.php" class="form-container" id="text_form"></form>
+      <audio controls>
+        <source src="audio/חביב_מרכז היגיינה.m4a" type="audio/wav">
+      </audio>
+    </div>
+    <div class="form-popup-right" id="HaRazif - Homeless unit">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeForm()'>x</button>
+      <form action="/action_page.php" class="form-container" id="text_form"></form>
+      <audio controls>
+        <source src="audio/יואב_יחידת דרי רחוב.mp3" type="audio/mp3">
+      </audio>
+    </div>
     <div class="form-popup-right" id="Issa">
       <button type="button" class="btn btn-outline-dark" id='close' onclick='closeForm("Issa")'>x</button>
       <form action="/action_page.php" class="form-container" id="text_form"></form>
@@ -1004,20 +1012,20 @@
 
       var hebrew_english_titles = {
         '3D': '3D',
-        'Sleeping Corners': 'לינה',
+        'Sleeping Arrangement': 'לינה',
         'Food': 'מזון',
         'Stay': 'שהייה',
         'Researched Staying Points': 'נקודות שהייה שנחקרו',
         'green areas and parks': 'גינות',
         'Squares': 'כיכרות',
         'Work': 'עבודה', 
-        'Beggaring': 'קיבוץ נדבות',
-        'Recycling Bottles': 'איסוף בקבוקים', 
+        'Beggary': 'קיבוץ נדבות',
+        'Collecting Bottles': 'איסוף בקבוקים', 
         'Drug Deals': 'עסקאות סמים' ,
         'Front and Back Yard': 'חצר קדמית ואחורית',
         'Formal Institutions': 'מוסדות פורמליים',
         'Parking': 'חניונים',
-        'Air Corridors': 'מסדרונות אוויר',
+        'Ventilation': 'מסדרונות אוויר',
         'City Border': 'גבול העיר',
         'Light Rail': 'תוואי הרכבת הקלה',
         'Metro': 'רכבת תחתית',
@@ -1027,7 +1035,7 @@
         'Distribution Stations': 'עמדות חלוקה',
         'Food Points': 'ריכוזיות מזון',
         'Refreshment': 'התרעננות',
-        'Beaches Wardrobes': 'מלתחות חוף',
+        'Beaches Showers': 'מלתחות חוף',
         'Mikvahs': 'מקוואות',
         'Sport Fields': 'מגרשי ספורט',
         'Aid': 'סיוע',
@@ -1054,7 +1062,7 @@
         },
         'lower_text': {
           '': 'המחקר מבוסס על 19 סיפורים אישיים של דרי ודרות רחוב בעיר תל אביב, אשר על מנת להתקיים ולענות על צרכיהם הבסיסיים, נשענים על משאבים בעיר באופן סמוי. אלו, מוצגים לצד שכבות מידע של העיר שנבחנו בהתייחסות לסוגיית דרות הרחוב.',
-          '_en': 'The research is based on 19 personal stories of homeless men and women in the city of Tel Aviv, who, in order to survive and meet their basic needs, rely on resources in the city covertly. These are presented next to information layers of the city that were examined in reference to the issue of street dwellings.'
+          '_en': 'The research is based on 19 personal stories of homeless men and women in Tel Aviv who, to survive and meet their basic needs, rely on resources in the city covertly. These are presented next to information layers of the city that were examined in reference to the issue of street dwellings.'
         },
         'Synagogue Beit El': {
           '': '״תשאלי אותי איפה אני אוכל בשבת, למרות שאני לא כל כך רעב בבוקר…חוף פרישמן קצת קרוב לבן יהודה יש בית כנסת של הקהילה הצרפתית…עכשיו, כל שבת אחרי שהם גומרים את התפילה הם עושים קידוש, עכשיו אני אוהב נורא חמין, אז כל שבת הם עושים בחצר אוכל, וזה מה שאני לוקח…״ (נתן, דר רחוב)',
@@ -1468,6 +1476,12 @@
           );
 
           if (map.getLayoutProperty('3d-route', 'visibility') == 'visible') {
+            // Return legend to it's original position
+            if (language == '_en') {
+              document.getElementById("main_legend_button").innerHTML = 'Legend';
+              document.getElementById("accordion_container").style.marginRight = '20px';
+              document.getElementById("accordion_container").style.marginTop = '20px';
+            }
             // Open legend
             accordionOpen();
             // Turn off route
@@ -2097,27 +2111,27 @@
         routeIdsForPopup = {
           7015: {
             '': ['לינה, התרעננות ותמיכה', 'מסחר ומגורים', 'הקצאה בקרקע'],
-            '_en': ['Sleeping, refreshment and support', 'Commerce and residence', 'Land allocation'],
+            '_en': ['Sleeping Arrangement, Refreshment, Support', 'Commerce and residence', 'Allocation'],
             'layer': "Allocations_all"
           },
           2615: {
             '': ['מזון', 'חומוס גרגר הזהב', 'הסבה'],
-            '_en': ['Food', '"Golden grain" hummus', 'Endorsement'],
+            '_en': ['Food', 'The Golden Grain Hummus Restaurant', 'Reuse'],
             'layer': "Food_Point_all"
           },
           19306: {
             '': ['התרעננות', 'מכללה לאמנות קלישר', 'תוספת'],
-            '_en': ['Refreshment', 'Kalisher Art School', 'Addition'],
+            '_en': ['Refreshment', 'Kalischer College of Art', 'Addition'],
             'layer': "Refreshment_all"
           },
           13479: {
             '': ['לינה, מזון ותמיכה', 'מבנה נטוש', 'הסבה'],
-            '_en': ['Sleeping, food and support', 'Abandoned building', 'Endorsement'],
+            '_en': ['Sleeping Arrangement, Food, Support', 'Abandoned building', 'Reuse'],
             'layer': "Magen_David_all"
           },
           25250: {
             '': ['סיוע רפואי', 'מרכז קהילתי אריק איינשטיין', 'תוספת'],
-            '_en': ['Medical aid', 'Arik Einstein Community Center', 'Addition'],
+            '_en': ['Medical Assistance', 'Einstein Community Center', 'Addition'],
             'layer': "Medical_Treatment_all"
           }
         }
@@ -2145,7 +2159,7 @@
               else if (fId == 13479 || fId == 25250 || fId == 19306) {
                 offset += 50;
               }
-              var popup = new mapboxgl.Popup({ offset: [0, offset], closeOnMove: false, closeButton: false, closeOnClick: false, className: "routePopup", anchor: "bottom"});
+              var popup = new mapboxgl.Popup({ offset: [0, offset], closeOnMove: false, closeButton: false, closeOnClick: false, className: "routePopup" + language, anchor: "bottom"});
               var title = routeIdsForPopup[fId][language][0];
               var subtitle = routeIdsForPopup[fId][language][1];
               var finaltitle = routeIdsForPopup[fId][language][2];
@@ -2232,6 +2246,12 @@
           setMapInteractive(false);
           // Collapse legend
           accordionCollapse();
+          // Collapse legend to the top right corner
+          if (language == '_en') {
+            document.getElementById("main_legend_button").innerHTML = '';
+            document.getElementById("accordion_container").style.marginRight = '0';
+            document.getElementById("accordion_container").style.marginTop = '0';
+          }
           // Turn ON route layers
           setRouteVis('visible');
           document.getElementById("main_title").style.display = "none";
@@ -2675,7 +2695,17 @@
 
           var textForm = document.getElementById(divId).querySelector('#text_form');
           if (textForm != undefined) {
-            if (text == "") {
+            if ("subtitles" in properties) {
+              var subtitles = document.createElement('h3');
+              subtitles.innerHTML = '<b>' + properties["subtitles" + language] + '</b>';
+              if (textForm.children.length > 0) {
+                textForm.replaceChild(subtitles, textForm.children[0]);
+              }
+              else {
+                textForm.appendChild(subtitles);
+              }
+            }
+            else if (text == "") {
               var name = document.createElement('h3');
               var name_title = language == '_en' ? 'Name' : 'שם';
               var lang = language == '_en' ? language : '_he';
@@ -2689,15 +2719,28 @@
                                 '</b></br>';
               var description = document.createElement('h3');
               description.innerHTML = '<b>' + properties["description" + language] + '</b>';
+              if ("subs" in properties) {
+                var subs = document.createElement('h3');
+                var subs_title = language == '_en' ? 'Audio subtitles' : 'כתוביות';
+                subs.innerHTML = subs_title + '<br><b>' +
+                                  properties["subs" + language] +
+                                  '</b></br>';
+              }
               if (textForm.children.length > 0) {
                 textForm.replaceChild(name, textForm.children[0]);
                 textForm.replaceChild(sleeping, textForm.children[1]);
                 textForm.replaceChild(description, textForm.children[2]);
+                if (textForm.children.length > 3 && subs != undefined) {
+                  textForm.replaceChild(subs, textForm.children[3]);
+                }
               }
               else {
                 textForm.appendChild(name);
                 textForm.appendChild(sleeping);
                 textForm.appendChild(description);
+                if (subs != undefined) {
+                  textForm.appendChild(subs);
+                }
               }
             }
             else {
@@ -2723,7 +2766,7 @@
           map.on('click', layers[i], (e) => {
             // console.log(e.features[0].layer['id']);
             var prop = e.features[0].properties["name"];
-            var idsToPrint = ['3D', '3d route'];
+            var idsToPrint = ['3D', '3d route', 'formal', 'sleeping-corners'];
             if (idsToPrint.includes(e.features[0].layer['id'])) {
               console.log(e.features[0].properties);
             }
