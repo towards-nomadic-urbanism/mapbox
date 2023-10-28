@@ -981,7 +981,8 @@
       // Global Controls
       var controls = [];
 
-      var language = ''; // Set language to '_en' for English or '' for Hebrew
+      var language = '_en'; // Set language to '_en' for English or '' for Hebrew
+      var controlsDir = language == '_en' ? 'left' : 'right';
       var flying = false;
       var formToOpen = "";
       var mapPopups = true;
@@ -999,6 +1000,8 @@
         container: 'map', 
         style: 'mapbox://styles/adigali/ckwluaunh2ymp14o5vwkekbgg' 
       });
+
+      //setLanguage(true);
 
       // var pos = [34.77551, 32.07435];
       var pos = [34.77475749494556, 32.07036562603348];
@@ -1132,13 +1135,14 @@
           elem.classList.remove(class_name);
           elem.classList.add(name_list.join('-'));
         });
-        
-        controls.forEach((control) => {
-          map.removeControl(control);
-        });
-        controls.forEach((control) => {
-          map.addControl(control, 'top-' + direction);
-        });
+        if (controls.length == 4) {
+          controls.forEach((control) => {
+            map.removeControl(control);
+          });
+          controls.forEach((control) => {
+            map.addControl(control, 'top-' + direction);
+          });
+        }
         // if (language == '_en') {
         //   legend_accordion.classList.remove('map-overlay-left');
         //   legend_accordion.classList.add('map-overlay-right');
@@ -1390,12 +1394,6 @@
 
         var draft_map_layers = draftMap.getStyle().layers;
         var draft_map_layers2 = draftMap2.getStyle().layers;
-        console.log("Original: ");
-        console.log(map.getStyle().layers);
-        console.log("Draft: ");
-        console.log(draftMap.getStyle().layers);
-        console.log("Draft2: ");
-        console.log(draftMap2.getStyle().layers);
         map.addSource('composite_new', draftMap.getStyle().sources['composite']);
         map.addSource('composite_new2', draftMap2.getStyle().sources['composite']);
         for (i = 75; i < draft_map_layers.length; i++) {
@@ -1419,7 +1417,7 @@
         // Move 3D layer to back
         map.moveLayer('3D', map.getStyle().layers[78].id);
 
-        // setLanguage(true);
+        setLanguage(true);
         // updatePositions();
 
         function setRouteVis(vis) {
@@ -1465,7 +1463,7 @@
           visualizePitch: true
         });
         controls.push(nav_control);
-        map.addControl(nav_control, 'top-right');
+        map.addControl(nav_control, 'top-' + controlsDir);
         document.querySelector('.mapboxgl-ctrl-compass').addEventListener('click', () =>{
           
           setMapInteractive(true);
@@ -2318,7 +2316,7 @@
           eventHandler: routeHandler
         });
         controls.push(route_control);
-        map.addControl(route_control, 'top-right');
+        map.addControl(route_control, 'top-' + controlsDir);
 
         var tools_control = new MapboxGLButtonControl({
           className: "mapbox-gl-tools",
@@ -2326,7 +2324,7 @@
           eventHandler: toolsHandler
         });
         controls.push(tools_control);
-        map.addControl(tools_control, 'top-right');
+        map.addControl(tools_control, 'top-' + controlsDir);
 
         const ctrlInfo = new MapboxGLButtonControl({
           className: "mapbox-gl-info",
@@ -2342,7 +2340,7 @@
           eventHandler: matrixHandler
         });
         controls.push(matrix_control);
-        map.addControl(matrix_control, 'top-right');
+        map.addControl(matrix_control, 'top-' + controlsDir);
 
         const ctrlLanguage = new MapboxGLButtonControl({
           className: "mapbox-gl-language",
