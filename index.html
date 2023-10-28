@@ -221,10 +221,7 @@
 
 
     function clickTitle(titleName) {
-      // var mainTitle = document.getElementById('main_title').children[0];
       var secondaryTitle = document.getElementById('secondary_title');
-      // var lowerText = document.getElementById('lower_text').children[0];
-      // var instructionTitle= document.getElementById('instruction');
       var accordionDiv = document.getElementById(titlesHebrew[titleName]);
       var clickedItem = document.getElementById(titleName);
       if (titleName == "מחקר") {
@@ -232,24 +229,18 @@
         if (!planningOn) {
           titles_text['main_title'][''] = 'כלי לקריאה מחודשת של תל-אביב מעיניהם של דרי הרחוב';
           titles_text['main_title']['_en'] = 'A tool for re-reading Tel Aviv through the eyes of the homeless';
-          // mainTitle.innerHTML = 'כלי לקריאה מחודשת של תל-אביב מעיניהם של דרי הרחוב';
           secondaryTitle.style.display = 'block';
           titles_text['lower_text'][''] = 'המחקר מבוסס על 19 סיפורים אישיים של דרי ודרות רחוב בעיר תל אביב, אשר על מנת להתקיים ולענות על צרכיהם הבסיסיים, נשענים על משאבים בעיר באופן סמוי. אלו, מוצגים לצד שכבות מידע של העיר שנבחנו בהתייחסות לסוגיית דרות הרחוב.';
           titles_text['lower_text']['_en'] = 'The research is based on 19 personal stories of homeless men and women in the city of Tel Aviv, who, in order to survive and meet their basic needs, rely on resources in the city covertly. These are presented next to information layers of the city that were examined in reference to the issue of street dwellings.';
-          // lowerText.innerHTML = 'המחקר מבוסס על 19 סיפורים אישיים של דרי ודרות רחוב בעיר תל אביב, אשר על מנת להתקיים ולענות על צרכיהם הבסיסיים, נשענים על משאבים בעיר באופן סמוי. אלו, מוצגים לצד שכבות מידע של העיר שנבחנו בהתייחסות לסוגיית דרות הרחוב.';
-          // instructionTitle.style.display = 'none';
         }
       }
       else if (titleName == "תכנון") {
         planningOn = !planningOn;
         titles_text['main_title'][''] = 'פריסת מוקדים עירונית המאפשרת קיום חיים בסטטוס המעבר';
         titles_text['main_title']['_en'] = 'An urban focal point layout that enables life in a transitory status';
-        // mainTitle.innerHTML = 'פריסת מוקדים עירונית המאפשרת קיום חיים בסטטוס המעבר';
         secondaryTitle.style.display = 'none';
         titles_text['lower_text'][''] = 'התכנית העירונית פורסת רשת של מוקדים הפועלים יחד על מנת לאפשר קיום עירוני מגוון והבטחה של חיים בכבוד, גם ללא בית קבוע, ובעצם להיות בבית בעיר. הרשת מורכבת ממענה לצרכים בסיסיים ומאפשרת למשתמשים בה אפשרויות בחירה רבות.';
         titles_text['lower_text']['_en'] = 'The urban plan lays out a network of centers that work together to enable a diverse urban existence and guarantee a life with dignity, even without a permanent home, and basically to be at home in the city. The network responds to basic needs and allows its users many choices.';
-        // lowerText.innerHTML = 'התכנית העירונית פורסת רשת של מוקדים הפועלים יחד על מנת לאפשר קיום עירוני מגוון והבטחה של חיים בכבוד, גם ללא בית קבוע, ובעצם להיות בבית בעיר. הרשת מורכבת ממענה לצרכים בסיסיים ומאפשרת למשתמשים בה אפשרויות בחירה רבות.';
-        // instructionTitle.style.display = 'block';
         var vis = true;
         if (!planningOn && !researchOn) {
           vis = false;
@@ -257,12 +248,9 @@
         if (!planningOn && researchOn) {
           titles_text['main_title'][''] = 'כלי לקריאה מחודשת של תל-אביב מעיניהם של דרי הרחוב';
           titles_text['main_title']['_en'] = 'A tool for re-reading Tel Aviv through the eyes of the homeless';
-          // mainTitle.innerHTML = 'כלי לקריאה מחודשת של תל-אביב מעיניהם של דרי הרחוב';
           secondaryTitle.style.display = 'block';
           titles_text['lower_text'][''] = 'המחקר מבוסס על 19 סיפורים אישיים של דרי ודרות רחוב בעיר תל אביב, אשר על מנת להתקיים ולענות על צרכיהם הבסיסיים, נשענים על משאבים בעיר באופן סמוי. אלו, מוצגים לצד שכבות מידע של העיר שנבחנו בהתייחסות לסוגיית דרות הרחוב.';
           titles_text['lower_text']['_en'] = 'The research is based on 19 personal stories of homeless men and women in the city of Tel Aviv, who, in order to survive and meet their basic needs, rely on resources in the city covertly. These are presented next to information layers of the city that were examined in reference to the issue of street dwellings.';
-          // lowerText.innerHTML = 'המחקר מבוסס על 19 סיפורים אישיים של דרי ודרות רחוב בעיר תל אביב, אשר על מנת להתקיים ולענות על צרכיהם הבסיסיים, נשענים על משאבים בעיר באופן סמוי. אלו, מוצגים לצד שכבות מידע של העיר שנבחנו בהתייחסות לסוגיית דרות הרחוב.';
-          // instructionTitle.style.display = 'none';
         }
         
         for (i = 0; i < research.children.length; i++) {
@@ -1064,7 +1052,8 @@
         },
         'lower_text': {
           '': 'המחקר מבוסס על 19 סיפורים אישיים של דרי ודרות רחוב בעיר תל אביב, אשר על מנת להתקיים ולענות על צרכיהם הבסיסיים, נשענים על משאבים בעיר באופן סמוי. אלו, מוצגים לצד שכבות מידע של העיר שנבחנו בהתייחסות לסוגיית דרות הרחוב.',
-          '_en': 'The research is based on 19 personal stories of homeless men and women in Tel Aviv who, to survive and meet their basic needs, rely on resources in the city covertly. These are presented next to information layers of the city that were examined in reference to the issue of street dwellings.'
+          '_en': 'The research is based on 19 personal stories of homeless men and women in Tel Aviv who, to survive and meet their basic needs, rely on resources in the city covertly. These are presented next to information layers of the city that were examined in reference to the issue of street dwellings.',
+          'route': 'Press the marked points on the route to see the planning'
         },
         'Synagogue Beit El': {
           '': '״תשאלי אותי איפה אני אוכל בשבת, למרות שאני לא כל כך רעב בבוקר…חוף פרישמן קצת קרוב לבן יהודה יש בית כנסת של הקהילה הצרפתית…עכשיו, כל שבת אחרי שהם גומרים את התפילה הם עושים קידוש, עכשיו אני אוהב נורא חמין, אז כל שבת הם עושים בחצר אוכל, וזה מה שאני לוקח…״ (נתן, דר רחוב)',
@@ -1417,7 +1406,7 @@
         // Move 3D layer to back
         map.moveLayer('3D', map.getStyle().layers[78].id);
 
-        setLanguage(true);
+        //setLanguage(true);
         // updatePositions();
 
         function setRouteVis(vis) {
@@ -1512,6 +1501,9 @@
             planning_checkbox.dispatchEvent(evt);
             // Turn on map titles
             document.getElementById("main_title").style.display = "block";
+            // Hide lower text
+            document.getElementById('lower_text').children[0].innerHTML = titles_text['lower_text'][language];
+            document.getElementById('lower_text').style.display = 'none';
             // Fly back up
             map.fire('flystart');
           }
@@ -1993,7 +1985,7 @@
           }
         }
         // Set map language to English
-        //setLanguage(true);
+        setLanguage(true);
 
         layers.push('3d-route');
         layers.push('24h-homeless-route');
@@ -2268,6 +2260,9 @@
           mapPopups = false;
           // addPopupToRoute();
 
+          // Show lower text
+          document.getElementById('lower_text').children[0].innerHTML = titles_text['lower_text']['route'];
+          document.getElementById('lower_text').style.display = 'block';
         }
 
         function toolsHandler(event) {
