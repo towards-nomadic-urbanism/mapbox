@@ -998,7 +998,6 @@
       var map = new mapboxgl.Map({
         container: 'map', 
         style: 'mapbox://styles/adigali/ckwluaunh2ymp14o5vwkekbgg' 
-        
       });
 
       // var pos = [34.77551, 32.07435];
@@ -1391,6 +1390,12 @@
 
         var draft_map_layers = draftMap.getStyle().layers;
         var draft_map_layers2 = draftMap2.getStyle().layers;
+        console.log("Original: ");
+        console.log(map.getStyle().layers);
+        console.log("Draft: ");
+        console.log(draftMap.getStyle().layers);
+        console.log("Draft2: ");
+        console.log(draftMap2.getStyle().layers);
         map.addSource('composite_new', draftMap.getStyle().sources['composite']);
         map.addSource('composite_new2', draftMap2.getStyle().sources['composite']);
         for (i = 75; i < draft_map_layers.length; i++) {
@@ -2773,7 +2778,7 @@
             // console.log(prop);
             if (prop in formIdx) {
               
-              if (e.features[0].layer['id'] == 'sleeping-corners') {
+              if (e.features[0].layer['id'] == 'sleeping-corners' || e.features[0].layer['id'] == 'formal') {
                 updateTextDiv(forms[formIdx[prop]], e.features[0].properties);
               }
               else if (prop == 'Pasta Basta') {
