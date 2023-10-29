@@ -2275,6 +2275,7 @@
 
         function infoHandler(event) {
           var infoText = document.getElementById('lower_text');
+          infoText.style.width = language == '_en' ? '420px' : '400px';
           var vis = infoText.style.display;
           vis = vis == 'none' ? 'block' : 'none';
           infoText.style.display = vis;
