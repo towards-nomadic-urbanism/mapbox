@@ -231,7 +231,7 @@
         researchOn = !researchOn;
         if (!planningOn) {
           titles_text['main_title'][''] = 'כלי לקריאה מחודשת של תל-אביב מעיניהם של דרי הרחוב';
-          titles_text['main_title']['_en'] = 'A tool for re-reading Tel Aviv through the eyes of the homeless';
+          titles_text['main_title']['_en'] = 'A tool for rereading Tel Aviv from the perspective of individuals experiencing homelessness';
           secondaryTitle.style.display = 'block';
           titles_text['lower_text'][''] = 'המחקר מבוסס על 19 סיפורים אישיים של דרי ודרות רחוב בעיר תל אביב, אשר על מנת להתקיים ולענות על צרכיהם הבסיסיים, נשענים על משאבים בעיר באופן סמוי. אלו, מוצגים לצד שכבות מידע של העיר שנבחנו בהתייחסות לסוגיית דרות הרחוב.';
           titles_text['lower_text']['_en'] = 'The research is based on 19 personal stories of homeless men and women in the city of Tel Aviv, who, in order to survive and meet their basic needs, rely on resources in the city covertly. These are presented next to information layers of the city that were examined in reference to the issue of street dwellings.';
@@ -250,7 +250,7 @@
         }
         if (!planningOn && researchOn) {
           titles_text['main_title'][''] = 'כלי לקריאה מחודשת של תל-אביב מעיניהם של דרי הרחוב';
-          titles_text['main_title']['_en'] = 'A tool for re-reading Tel Aviv through the eyes of the homeless';
+          titles_text['main_title']['_en'] = 'A tool for rereading Tel Aviv from the perspective of individuals experiencing homelessness';
           secondaryTitle.style.display = 'block';
           titles_text['lower_text'][''] = 'המחקר מבוסס על 19 סיפורים אישיים של דרי ודרות רחוב בעיר תל אביב, אשר על מנת להתקיים ולענות על צרכיהם הבסיסיים, נשענים על משאבים בעיר באופן סמוי. אלו, מוצגים לצד שכבות מידע של העיר שנבחנו בהתייחסות לסוגיית דרות הרחוב.';
           titles_text['lower_text']['_en'] = 'The research is based on 19 personal stories of homeless men and women in the city of Tel Aviv, who, in order to survive and meet their basic needs, rely on resources in the city covertly. These are presented next to information layers of the city that were examined in reference to the issue of street dwellings.';
@@ -409,6 +409,20 @@
         });
       </script>
     </div>
+    <div class="full-image" id="Mechurim_en">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeImage("Mechurim_en", "Men shelter")'>x</button>
+      <div id="Mechurim_in_en"></div>
+      <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+      <script type="text/javascript">
+        document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
+          var adobeDCView = new AdobeDC.View({clientId: "8a65f1b3413e4fabaf92a4a49d313fcc", divId: "Mechurim_in_en"});
+          adobeDCView.previewFile({
+            content:{location: {url: `https://towards-nomadic-urbanism.github.io/mapbox/images_en/Mechurim.pdf`}},
+            metaData:{fileName: "פרטים גגון מכורים"}
+          }, {embedMode: "SIZED_CONTAINER", showDownloadPDF: false, showPrintPDF: false});
+        });
+      </script>
+    </div>
     <div class="full-image" id="Women">
       <button type="button" class="btn btn-outline-dark" id='close' onclick='closeImage("Women", "Women shelter")'>x</button>
       <div id="Women_in"></div>
@@ -417,7 +431,21 @@
         document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
           var adobeDCView = new AdobeDC.View({clientId: "8a65f1b3413e4fabaf92a4a49d313fcc", divId: "Women_in"});
           adobeDCView.previewFile({
-            content:{location: {url: "https://towards-nomadic-urbanism.github.io/mapbox/images/Women.pdf"}},
+            content:{location: {url: `https://towards-nomadic-urbanism.github.io/mapbox/images/Women.pdf`}},
+            metaData:{fileName: "פרטים גגון נשים"}
+          }, {embedMode: "SIZED_CONTAINER", showDownloadPDF: false, showPrintPDF: false});
+        });
+      </script>
+    </div>
+    <div class="full-image" id="Women_en">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeImage("Women_en", "Women shelter")'>x</button>
+      <div id="Women_in_en"></div>
+      <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+      <script type="text/javascript">
+        document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
+          var adobeDCView = new AdobeDC.View({clientId: "8a65f1b3413e4fabaf92a4a49d313fcc", divId: "Women_in_en"});
+          adobeDCView.previewFile({
+            content:{location: {url: `https://towards-nomadic-urbanism.github.io/mapbox/images_en/Women.pdf`}},
             metaData:{fileName: "פרטים גגון נשים"}
           }, {embedMode: "SIZED_CONTAINER", showDownloadPDF: false, showPrintPDF: false});
         });
@@ -431,7 +459,21 @@
         document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
           var adobeDCView = new AdobeDC.View({clientId: "8a65f1b3413e4fabaf92a4a49d313fcc", divId: "Dirat Maavar_in"});
           adobeDCView.previewFile({
-            content:{location: {url: "https://towards-nomadic-urbanism.github.io/mapbox/images/Dirat Maavar.pdf"}},
+            content:{location: {url: `https://towards-nomadic-urbanism.github.io/mapbox/images/Dirat Maavar.pdf`}},
+            metaData:{fileName: "פרטים דירת מעבר"}
+          }, {embedMode: "SIZED_CONTAINER", showDownloadPDF: false, showPrintPDF: false});
+        });
+      </script>
+    </div>
+    <div class="full-image" id="Dirat Maavar_en">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeImage("Dirat Maavar_en", "Transition Apartment")'>x</button>
+      <div id="Dirat Maavar_in_en"></div>
+      <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+      <script type="text/javascript">
+        document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
+          var adobeDCView = new AdobeDC.View({clientId: "8a65f1b3413e4fabaf92a4a49d313fcc", divId: "Dirat Maavar_in_en"});
+          adobeDCView.previewFile({
+            content:{location: {url: `https://towards-nomadic-urbanism.github.io/mapbox/images_en/Dirat Maavar.pdf`}},
             metaData:{fileName: "פרטים דירת מעבר"}
           }, {embedMode: "SIZED_CONTAINER", showDownloadPDF: false, showPrintPDF: false});
         });
@@ -446,7 +488,21 @@
         document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
           var adobeDCView = new AdobeDC.View({clientId: "8a65f1b3413e4fabaf92a4a49d313fcc", divId: "Dirty Burger img_in"});
           adobeDCView.previewFile({
-            content:{location: {url: "https://towards-nomadic-urbanism.github.io/mapbox/images/Dirty Burger.pdf"}},
+            content:{location: {url: `https://towards-nomadic-urbanism.github.io/mapbox/images/Dirty Burger.pdf`}},
+            metaData:{fileName: '"המלוכלך"'}
+          }, {embedMode: "SIZED_CONTAINER", showDownloadPDF: false, showPrintPDF: false});
+        });
+      </script>
+    </div>
+    <div class="full-image" id="Dirty Burger img_en">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeImage("Dirty Burger img_en", "Dirty Burger")'>x</button>
+      <div id="Dirty Burger img_in_en"></div>
+      <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+      <script type="text/javascript">
+        document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
+          var adobeDCView = new AdobeDC.View({clientId: "8a65f1b3413e4fabaf92a4a49d313fcc", divId: "Dirty Burger img_in_en"});
+          adobeDCView.previewFile({
+            content:{location: {url: `https://towards-nomadic-urbanism.github.io/mapbox/images_en/Dirty Burger.pdf`}},
             metaData:{fileName: '"המלוכלך"'}
           }, {embedMode: "SIZED_CONTAINER", showDownloadPDF: false, showPrintPDF: false});
         });
@@ -461,7 +517,22 @@
         document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
           var adobeDCView = new AdobeDC.View({clientId: "8a65f1b3413e4fabaf92a4a49d313fcc", divId: "Frishman 46_in"});
           adobeDCView.previewFile({
-            content:{location: {url: "https://towards-nomadic-urbanism.github.io/mapbox/images/Frishman 46.pdf"}},
+            content:{location: {url: `https://towards-nomadic-urbanism.github.io/mapbox/images/Frishman 46.pdf`}},
+            metaData:{fileName: "ספסל מול מגדל פרישמן"}
+          }, {embedMode: "SIZED_CONTAINER", showDownloadPDF: false, showPrintPDF: false});
+        });
+      </script>
+    </div>
+    <div class="full-image" id="Frishman 46_en">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeImage("Frishman 46_en", "Natan")'>x</button>
+
+      <div id="Frishman 46_in_en"></div>
+      <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+      <script type="text/javascript">
+        document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
+          var adobeDCView = new AdobeDC.View({clientId: "8a65f1b3413e4fabaf92a4a49d313fcc", divId: "Frishman 46_in_en"});
+          adobeDCView.previewFile({
+            content:{location: {url: `https://towards-nomadic-urbanism.github.io/mapbox/images_en/Frishman 46.pdf`}},
             metaData:{fileName: "ספסל מול מגדל פרישמן"}
           }, {embedMode: "SIZED_CONTAINER", showDownloadPDF: false, showPrintPDF: false});
         });
@@ -476,7 +547,25 @@
         document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
           var adobeDCView = new AdobeDC.View({clientId: "8a65f1b3413e4fabaf92a4a49d313fcc", divId: "Dizengoff  Square_in_in"});
           adobeDCView.previewFile({
-            content:{location: {url: "https://towards-nomadic-urbanism.github.io/mapbox/images/final/Sections/Dizengoff Section.pdf"}},
+            content:{location: {url: `https://towards-nomadic-urbanism.github.io/mapbox/images/final/Sections/Dizengoff Section.pdf`}},
+            metaData:{fileName: " "}
+          }, {embedMode: "SIZED_CONTAINER", showDownloadPDF: false, showPrintPDF: false});
+        });
+        var pdfHeader = document.getElementsByClassName('sdk-HeaderView-header')[0];
+        if (pdfHeader != undefined)
+          pdfHeader.remove();
+      </script>
+    </div>
+    <div class="full-image" id="Dizengoff  Square_in_en">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeImage("Dizengoff  Square_in_en", "Dizengoff  Square")'>x</button>
+      <button class="button" onclick="changeSource('Dizengoff  Square_in_en', 'Dizengoff  Square_in2_en')"><div class="button__arrow button__arrow--left"></div></button>
+      <div id="Dizengoff  Square_in_in_en"></div>
+      <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+      <script type="text/javascript">
+        document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
+          var adobeDCView = new AdobeDC.View({clientId: "8a65f1b3413e4fabaf92a4a49d313fcc", divId: "Dizengoff  Square_in_in_en"});
+          adobeDCView.previewFile({
+            content:{location: {url: `https://towards-nomadic-urbanism.github.io/mapbox/images_en/final/Sections/Dizengoff Section.pdf`}},
             metaData:{fileName: " "}
           }, {embedMode: "SIZED_CONTAINER", showDownloadPDF: false, showPrintPDF: false});
         });
@@ -495,7 +584,22 @@
         document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
           var adobeDCView = new AdobeDC.View({clientId: "8a65f1b3413e4fabaf92a4a49d313fcc", divId: "Dizengoff  Square_in2_in"});
           adobeDCView.previewFile({
-            content:{location: {url: "https://towards-nomadic-urbanism.github.io/mapbox/images/final/Sections/Zoom-in Section.pdf"}},
+            content:{location: {url: `https://towards-nomadic-urbanism.github.io/mapbox/images/final/Sections/Zoom-in Section.pdf`}},
+            metaData:{fileName: " "}
+          }, {embedMode: "SIZED_CONTAINER", showDownloadPDF: false, showPrintPDF: false});
+        });
+      </script>
+    </div>
+    <div class="full-image" id="Dizengoff  Square_in2_en">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeImage("Dizengoff  Square_in2_en", "Dizengoff  Square")'>x</button>
+      <button class="button" onclick="changeSource('Dizengoff  Square_in2_en', 'Dizengoff  Square_in_en')"><div class="button__arrow button__arrow--left"></div></button>
+      <div id="Dizengoff  Square_in2_in_en"></div>
+      <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+      <script type="text/javascript">
+        document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
+          var adobeDCView = new AdobeDC.View({clientId: "8a65f1b3413e4fabaf92a4a49d313fcc", divId: "Dizengoff  Square_in2_in_en"});
+          adobeDCView.previewFile({
+            content:{location: {url: `https://towards-nomadic-urbanism.github.io/mapbox/images_en/final/Sections/Zoom-in Section.pdf`}},
             metaData:{fileName: " "}
           }, {embedMode: "SIZED_CONTAINER", showDownloadPDF: false, showPrintPDF: false});
         });
@@ -510,7 +614,22 @@
         document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
           var adobeDCView = new AdobeDC.View({clientId: "8a65f1b3413e4fabaf92a4a49d313fcc", divId: "market_in_in"});
           adobeDCView.previewFile({
-            content:{location: {url: "https://towards-nomadic-urbanism.github.io/mapbox/images/final/Sections/Market Section.pdf"}},
+            content:{location: {url: `https://towards-nomadic-urbanism.github.io/mapbox/images/final/Sections/Market Section.pdf`}},
+            metaData:{fileName: " "}
+          }, {embedMode: "SIZED_CONTAINER", showDownloadPDF: false, showPrintPDF: false});
+        });
+      </script>
+    </div>
+    <div class="full-image" id="market_in_en">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeImage("market_in_en", "market")'>x</button>
+      <button class="button" onclick="changeSource('market_in_en', 'market_in2_en')"><div class="button__arrow button__arrow--left"></div></button>
+      <div id="market_in_in_en"></div>
+      <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+      <script type="text/javascript">
+        document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
+          var adobeDCView = new AdobeDC.View({clientId: "8a65f1b3413e4fabaf92a4a49d313fcc", divId: "market_in_in_en"});
+          adobeDCView.previewFile({
+            content:{location: {url: `https://towards-nomadic-urbanism.github.io/mapbox/images_en/final/Sections/Market Section.pdf`}},
             metaData:{fileName: " "}
           }, {embedMode: "SIZED_CONTAINER", showDownloadPDF: false, showPrintPDF: false});
         });
@@ -519,6 +638,17 @@
     <div class="full-image" id="market_in2">
       <button type="button" class="btn btn-outline-dark" id='left_close' onclick='closeImage("market_in2", "market")'>x</button>
       <button class="button" onclick="changeSource('market_in2', 'market_in')"><div class="button__arrow button__arrow--left"></div></button>
+      <embed
+        id="market_in2_in"
+        height="100%"
+        width="100%" 
+        src="images/final/Sections/Zoom-in-Section_GIF.gif#view=Fit">
+      </embed>
+      
+    </div>
+    <div class="full-image" id="market_in2_en">
+      <button type="button" class="btn btn-outline-dark" id='left_close' onclick='closeImage("market_in2_en", "market")'>x</button>
+      <button class="button" onclick="changeSource('market_in2_en', 'market_in_en')"><div class="button__arrow button__arrow--left"></div></button>
       <embed
         id="market_in2_in"
         height="100%"
@@ -537,7 +667,22 @@
         document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
           var adobeDCView = new AdobeDC.View({clientId: "8a65f1b3413e4fabaf92a4a49d313fcc", divId: "Allocations_all_in"});
           adobeDCView.previewFile({
-            content:{location: {url: "https://towards-nomadic-urbanism.github.io/mapbox/images/final/Planning/Allocations_all.pdf"}},
+            content:{location: {url: `https://towards-nomadic-urbanism.github.io/mapbox/images/final/Planning/Allocations_all.pdf`}},
+            metaData:{fileName: " "}
+          }, {embedMode: "SIZED_CONTAINER", showDownloadPDF: false, showPrintPDF: false});
+        });
+      </script>
+    </div>
+    <div class="full-image" id="Allocations_all_en" style="opacity: 100%;">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeCurrentImage("Allocations_all_en")'>x</button>
+      <!-- <button class="button" onclick="changeSource('Allocations_all', 'Allocations_all_in')"><div class="button__arrow button__arrow--left"></div></button> -->
+      <div id="Allocations_all_in_en"></div>
+      <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+      <script type="text/javascript">
+        document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
+          var adobeDCView = new AdobeDC.View({clientId: "8a65f1b3413e4fabaf92a4a49d313fcc", divId: "Allocations_all_in_en"});
+          adobeDCView.previewFile({
+            content:{location: {url: `https://towards-nomadic-urbanism.github.io/mapbox/images_en/final/Planning/Allocations_all.pdf`}},
             metaData:{fileName: " "}
           }, {embedMode: "SIZED_CONTAINER", showDownloadPDF: false, showPrintPDF: false});
         });
@@ -553,7 +698,22 @@
         document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
           var adobeDCView = new AdobeDC.View({clientId: "8a65f1b3413e4fabaf92a4a49d313fcc", divId: "Magen_David_all_in"});
           adobeDCView.previewFile({
-            content:{location: {url: "https://towards-nomadic-urbanism.github.io/mapbox/images/final/Planning/Magen_David_all.pdf"}},
+            content:{location: {url: `https://towards-nomadic-urbanism.github.io/mapbox/images/final/Planning/Magen_David_all.pdf`}},
+            metaData:{fileName: " "}
+          }, {embedMode: "SIZED_CONTAINER", showDownloadPDF: false, showPrintPDF: false});
+        });
+      </script>
+    </div>
+    <div class="full-image" id="Magen_David_all_en" style="opacity: 100%;">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeCurrentImage("Magen_David_all_en")'>x</button>
+      <!-- <button class="button" onclick="changeSource('Allocations_all', 'Allocations_all_in')"><div class="button__arrow button__arrow--left"></div></button> -->
+      <div id="Magen_David_all_in_en"></div>
+      <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+      <script type="text/javascript">
+        document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
+          var adobeDCView = new AdobeDC.View({clientId: "8a65f1b3413e4fabaf92a4a49d313fcc", divId: "Magen_David_all_in_en"});
+          adobeDCView.previewFile({
+            content:{location: {url: `https://towards-nomadic-urbanism.github.io/mapbox/images_en/final/Planning/Magen_David_all.pdf`}},
             metaData:{fileName: " "}
           }, {embedMode: "SIZED_CONTAINER", showDownloadPDF: false, showPrintPDF: false});
         });
@@ -569,7 +729,22 @@
         document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
           var adobeDCView = new AdobeDC.View({clientId: "8a65f1b3413e4fabaf92a4a49d313fcc", divId: "Food_Point_all_in"});
           adobeDCView.previewFile({
-            content:{location: {url: "https://towards-nomadic-urbanism.github.io/mapbox/images/final/Planning/Food_Point_all.pdf"}},
+            content:{location: {url: `https://towards-nomadic-urbanism.github.io/mapbox/images/final/Planning/Food_Point_all.pdf`}},
+            metaData:{fileName: " "}
+          }, {embedMode: "SIZED_CONTAINER", showDownloadPDF: false, showPrintPDF: false});
+        });
+      </script>
+    </div>
+    <div class="full-image" id="Food_Point_all_en" style="opacity: 100%;">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeCurrentImage("Food_Point_all_en")'>x</button>
+      <!-- <button class="button" onclick="changeSource('Allocations_all', 'Allocations_all_in')"><div class="button__arrow button__arrow--left"></div></button> -->
+      <div id="Food_Point_all_in_en"></div>
+      <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+      <script type="text/javascript">
+        document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
+          var adobeDCView = new AdobeDC.View({clientId: "8a65f1b3413e4fabaf92a4a49d313fcc", divId: "Food_Point_all_in_en"});
+          adobeDCView.previewFile({
+            content:{location: {url: `https://towards-nomadic-urbanism.github.io/mapbox/images_en/final/Planning/Food_Point_all.pdf`}},
             metaData:{fileName: " "}
           }, {embedMode: "SIZED_CONTAINER", showDownloadPDF: false, showPrintPDF: false});
         });
@@ -585,7 +760,22 @@
         document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
           var adobeDCView = new AdobeDC.View({clientId: "8a65f1b3413e4fabaf92a4a49d313fcc", divId: "Medical_Treatment_all_in"});
           adobeDCView.previewFile({
-            content:{location: {url: "https://towards-nomadic-urbanism.github.io/mapbox/images/final/Planning/Medical_Treatment_all.pdf"}},
+            content:{location: {url: `https://towards-nomadic-urbanism.github.io/mapbox/images/final/Planning/Medical_Treatment_all.pdf`}},
+            metaData:{fileName: " "}
+          }, {embedMode: "SIZED_CONTAINER", showDownloadPDF: false, showPrintPDF: false});
+        });
+      </script>
+    </div>
+    <div class="full-image" id="Medical_Treatment_all_en" style="opacity: 100%;">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeCurrentImage("Medical_Treatment_all_en")'>x</button>
+      <!-- <button class="button" onclick="changeSource('Allocations_all', 'Allocations_all_in')"><div class="button__arrow button__arrow--left"></div></button> -->
+      <div id="Medical_Treatment_all_in_en"></div>
+      <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+      <script type="text/javascript">
+        document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
+          var adobeDCView = new AdobeDC.View({clientId: "8a65f1b3413e4fabaf92a4a49d313fcc", divId: "Medical_Treatment_all_in_en"});
+          adobeDCView.previewFile({
+            content:{location: {url: `https://towards-nomadic-urbanism.github.io/mapbox/images_en/final/Planning/Medical_Treatment_all.pdf`}},
             metaData:{fileName: " "}
           }, {embedMode: "SIZED_CONTAINER", showDownloadPDF: false, showPrintPDF: false});
         });
@@ -601,7 +791,22 @@
         document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
           var adobeDCView = new AdobeDC.View({clientId: "8a65f1b3413e4fabaf92a4a49d313fcc", divId: "Refreshment_all_in"});
           adobeDCView.previewFile({
-            content:{location: {url: "https://towards-nomadic-urbanism.github.io/mapbox/images/final/Planning/Refreshment_all.pdf"}},
+            content:{location: {url: `https://towards-nomadic-urbanism.github.io/mapbox/images/final/Planning/Refreshment_all.pdf`}},
+            metaData:{fileName: " "}
+          }, {embedMode: "SIZED_CONTAINER", showDownloadPDF: false, showPrintPDF: false});
+        });
+      </script>
+    </div>
+    <div class="full-image" id="Refreshment_all_en" style="opacity: 100%;">
+      <button type="button" class="btn btn-outline-dark" id='close' onclick='closeCurrentImage("Refreshment_all_en")'>x</button>
+      <!-- <button class="button" onclick="changeSource('Allocations_all', 'Allocations_all_in')"><div class="button__arrow button__arrow--left"></div></button> -->
+      <div id="Refreshment_all_in_en"></div>
+      <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+      <script type="text/javascript">
+        document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
+          var adobeDCView = new AdobeDC.View({clientId: "8a65f1b3413e4fabaf92a4a49d313fcc", divId: "Refreshment_all_in_en"});
+          adobeDCView.previewFile({
+            content:{location: {url: `https://towards-nomadic-urbanism.github.io/mapbox/images_en/final/Planning/Refreshment_all.pdf`}},
             metaData:{fileName: " "}
           }, {embedMode: "SIZED_CONTAINER", showDownloadPDF: false, showPrintPDF: false});
         });
@@ -610,7 +815,7 @@
 
     <div class="form-popup-right" id="Gagon_Addicts">
       <button type="button" class="btn btn-outline-dark" id='close' onclick='closeForm()'>x</button>
-      <button type="button" class="btn btn-outline-secondary" id='enlarge' onclick='openImage("Mechurim")'>Enlarge</button>
+      <button type="button" class="btn btn-outline-secondary" id='enlarge' onclick='openImage(`Mechurim${language}`)'>Enlarge</button>
       <form action="/action_page.php" class="form-container" id="text_form"></form>
       <embed
         height="100%"
@@ -620,7 +825,7 @@
     </div>
     <div class="form-popup-right" id="Gagon_Women">
       <button type="button" class="btn btn-outline-dark" id='close' onclick='closeForm()'>x</button>
-      <button type="button" class="btn btn-outline-secondary" id='enlarge' onclick='openImage("Women")'>Enlarge</button>
+      <button type="button" class="btn btn-outline-secondary" id='enlarge' onclick='openImage(`Women${language}`)'>Enlarge</button>
       <form action="/action_page.php" class="form-container" id="text_form"></form>
       <embed
         height="100%"
@@ -630,7 +835,7 @@
     </div>
     <div class="form-popup-right" id="Transition Apartment">
       <button type="button" class="btn btn-outline-dark" id='close' onclick='closeForm()'>x</button>
-      <button type="button" class="btn btn-outline-secondary" id='enlarge' onclick='openImage("Dirat Maavar")'>Enlarge</button>
+      <button type="button" class="btn btn-outline-secondary" id='enlarge' onclick='openImage(`Dirat Maavar${language}`)'>Enlarge</button>
       <form action="/action_page.php" class="form-container" id="text_form"></form>
       <embed
         height="100%"
@@ -721,7 +926,7 @@
     
     <div class="form-popup-right" id="Dirty Burger">
       <button type="button" class="btn btn-outline-dark" id='close' onclick='closeForm()'>x</button>
-      <button type="button" class="btn btn-outline-secondary" id='enlarge' onclick='openImage("Dirty Burger img")'>Enlarge</button>
+      <button type="button" class="btn btn-outline-secondary" id='enlarge' onclick='openImage(`Dirty Burger img${language}`)'>Enlarge</button>
       <form action="/action_page.php" class="form-container" id="text_form"></form>
       <embed
         height="100%"
@@ -750,7 +955,7 @@
     </div>
     <div class="form-popup-right" id="Natan">
       <button type="button" class="btn btn-outline-dark" id='close' onclick='closeForm("Natan")'>x</button>
-      <button type="button" class="btn btn-outline-secondary" id='enlarge' onclick='openImage("Frishman 46")'>Enlarge</button>
+      <button type="button" class="btn btn-outline-secondary" id='enlarge' onclick='openImage(`Frishman 46${language}`)'>Enlarge</button>
       <form action="/action_page.php" class="form-container" id="text_form"></form>
       <iframe 
       width="560" 
@@ -769,7 +974,7 @@
     </div>
     <div class="form-popup-right" id="Dizengoff  Square">
       <button type="button" class="btn btn-outline-dark" id='close' onclick='closeForm()'>x</button>
-      <button type="button" class="btn btn-outline-secondary" id='enlarge' onclick='openImage("Dizengoff  Square_in")'>Enlarge</button>
+      <button type="button" class="btn btn-outline-secondary" id='enlarge' onclick='openImage(`Dizengoff  Square_in${language}`)'>Enlarge</button>
       <form action="/action_page.php" class="form-container" id="text_form"></form>
       <embed
         height="100%"
@@ -823,7 +1028,7 @@
     </div>
     <div class="form-popup-right" id="market">
       <button type="button" class="btn btn-outline-dark" id='close' onclick='closeForm()'>x</button>
-      <button type="button" class="btn btn-outline-secondary" id='enlarge' onclick='openImage("market_in")'>Enlarge</button>
+      <button type="button" class="btn btn-outline-secondary" id='enlarge' onclick='openImage(`market_in${language}`)'>Enlarge</button>
       <form action="/action_page.php" class="form-container" id="text_form"></form>
       <embed
         height="100%"
@@ -924,6 +1129,22 @@
   
     <script>
 
+      // Set documents to the correct language
+      function setDocumentsSrc() {
+        var document_array = Array.from(document.querySelectorAll('embed')).concat(Array.from(document.querySelectorAll('img')));
+        document_array.forEach((doc) => {
+          var ref_word = 'images';
+          if (doc.src.includes('.pdf') || doc.src.includes('.gif') || doc.src.includes('.png')) {
+            if (doc.src.indexOf('images_en') != -1) {
+              ref_word = 'images_en';
+            }
+            var idx = doc.src.indexOf(ref_word);
+            var new_src = doc.src.substring(0, idx) + `images${language}` + doc.src.substring(idx + ref_word.length);
+            doc.src = new_src;
+          }
+        });
+      }
+
       mapboxgl.accessToken = 'pk.eyJ1IjoiYWRpZ2FsaSIsImEiOiJja3dsc3ViOHYwMXNxMnBxdDRmOW1tcDRhIn0.01oFmibnj8b3erAu6aTXIg';
       mapboxgl.setRTLTextPlugin(
         'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.2.3/mapbox-gl-rtl-text.js',
@@ -1008,7 +1229,7 @@
       var titles_text = {
         'main_title': {
           '': 'כלי לקריאה מחודשת של תל-אביב מעיניהם של דרי הרחוב',
-          '_en': 'A tool for re-reading Tel Aviv through the eyes of the homeless'
+          '_en': 'A tool for rereading Tel Aviv from the perspective of individuals experiencing homelessness'
         },
         'secondary_title': {
           '': 'לחץ על הנקודות הצהובות להכרת הסיפורים האישיים \
@@ -1150,8 +1371,8 @@
         if (isUpdate) {
           updatePositions();
           updateLegendLang();
+          setDocumentsSrc();
         }
-        
       }
 
       function closeAllImages(image_list) {
@@ -1206,7 +1427,7 @@
         secondScript.innerHTML = "document.addEventListener(\"adobe_dc_view_sdk.ready\", function(){ " +
           "var adobeDCView = new AdobeDC.View({clientId: \"9029a3f828a14ab9b10c9b799a7981d8\", divId: \"" + innerDiv.id + "\"});" +
           "adobeDCView.previewFile({" +
-            "content:{location: {url: \"https://towards-nomadic-urbanism.github.io/mapbox/images/final/Planning/" + folder_name + '/' + imgId + ".pdf\"}}," +
+            `content:{location: {url: \"https://towards-nomadic-urbanism.github.io/mapbox/images${language}/final/Planning/` + folder_name + '/' + imgId + ".pdf\"}}," +
             "metaData:{fileName: \" \"}" +
           "}, {embedMode: \"SIZED_CONTAINER\", showDownloadPDF: false, showPrintPDF: false, showPageControls: false, showAnnotationTools: false});" +
         "});";
@@ -1621,7 +1842,7 @@
               researchOn = !researchOn;
               if (!planningOn) {
                 titles_text['main_title'][''] = 'כלי לקריאה מחודשת של תל-אביב מעיניהם של דרי הרחוב';
-                titles_text['main_title']['_en'] = 'A tool for re-reading Tel Aviv through the eyes of the homeless';
+                titles_text['main_title']['_en'] = 'A tool for rereading Tel Aviv from the perspective of individuals experiencing homelessness';
                 // mainTitle.innerHTML = 'כלי לקריאה מחודשת של תל-אביב מעיניהם של דרי הרחוב';
                 secondaryTitle.style.display = 'block';
                 titles_text['lower_text'][''] = 'המחקר מבוסס על 19 סיפורים אישיים של דרי ודרות רחוב בעיר תל אביב, אשר על מנת להתקיים ולענות על צרכיהם הבסיסיים, נשענים על משאבים בעיר באופן סמוי. אלו, מוצגים לצד שכבות מידע של העיר שנבחנו בהתייחסות לסוגיית דרות הרחוב.';
@@ -1646,7 +1867,7 @@
               }
               if (!planningOn && researchOn) {
                 titles_text['main_title'][''] = 'כלי לקריאה מחודשת של תל-אביב מעיניהם של דרי הרחוב';
-                titles_text['main_title']['_en'] = 'A tool for re-reading Tel Aviv through the eyes of the homeless';
+                titles_text['main_title']['_en'] = 'A tool for rereading Tel Aviv from the perspective of individuals experiencing homelessness';
                 // mainTitle.innerHTML = 'כלי לקריאה מחודשת של תל-אביב מעיניהם של דרי הרחוב';
                 secondaryTitle.style.display = 'block';
                 titles_text['lower_text'][''] = 'המחקר מבוסס על 19 סיפורים אישיים של דרי ודרות רחוב בעיר תל אביב, אשר על מנת להתקיים ולענות על צרכיהם הבסיסיים, נשענים על משאבים בעיר באופן סמוי. אלו, מוצגים לצד שכבות מידע של העיר שנבחנו בהתייחסות לסוגיית דרות הרחוב.';
