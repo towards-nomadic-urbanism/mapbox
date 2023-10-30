@@ -17,7 +17,7 @@
     <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js" integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ==" crossorigin=""></script>
   </head>
   <script>
-
+    var language = '_en'; // Set language to '_en' for English or '' for Hebrew
     var forms = [
       'Gagon_Addicts',
       'Gagon_Women',
@@ -148,6 +148,9 @@
       }
       
     }
+
+    // document.getElementById('Transition Apartment').querySelector('embed')
+
 
     var relIdx = 0;
     function changeSource(id1, id2) {
@@ -348,49 +351,11 @@
     <img
       src="images/final/Toolbox_BW.png">
     </img>
-    <!-- <iframe
-        height="100%"
-        width="100%" 
-        src="images/final/Toolbox_BW.pdf#toolbar=0"
-        frameborder="0">
-        style="position:absolute;right:0; top:0; bottom:0; width:100%; height:100%;" 
-    </iframe> -->
-    <!-- <button type="button" class="btn btn-outline-dark" id='close' onclick='closeImage("Mechurim", "\"Lasova\"_Gagon_Addicts")'>x</button> -->
-    <!-- <div id="toolbox_in" style="width: 100%; height: 100%"></div>
-    <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
-    <script type="text/javascript">
-      document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
-        var adobeDCView = new AdobeDC.View({clientId: "8a65f1b3413e4fabaf92a4a49d313fcc", divId: "toolbox_in"});
-        adobeDCView.previewFile({
-          content:{location: {url: "https://towards-nomadic-urbanism.github.io/mapbox/images/final/Toolbox_BW.pdf"}},
-          metaData:{fileName: " "}
-        }, {defaultViewMode: "FIT_PAGE", showAnnotationTools: false, showLeftHandPanel: false, 
-			                        showPageControls: false, showDownloadPDF: false, showPrintPDF: false});
-      });
-    </script> -->
   </div>
   <div class="matrix-class-right" id="matrix" style="display: none;">
     <img
       src="images/final/Network_matrix.png">
     </img>
-    <!-- <embed
-        height="100%"
-        width="100%" 
-        src="images/final/Network_matrix.pdf#zoom=FitH&toolbar=0"
-        style="position:absolute;right:0; top:0; bottom:0; width:100%; height:100%;">
-      </embed> -->
-    <!-- <div id="matrix_in" style="width: 100%; height: 100%"></div>
-    <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
-    <script type="text/javascript">
-      document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
-        var adobeDCView = new AdobeDC.View({clientId: "8a65f1b3413e4fabaf92a4a49d313fcc", divId: "matrix_in"});
-        adobeDCView.previewFile({
-          content:{location: {url: "https://towards-nomadic-urbanism.github.io/mapbox/images/final/Network_matrix.pdf"}},
-          metaData:{fileName: " "}
-        }, {defaultViewMode: "FIT_PAGE", showAnnotationTools: false, showLeftHandPanel: false, 
-			                        showPageControls: false, showDownloadPDF: false, showPrintPDF: false});
-      });
-    </script> -->
   </div>
   <body>
     <div id="map"></div>
@@ -438,7 +403,7 @@
         document.addEventListener("adobe_dc_view_sdk.ready", function(){ 
           var adobeDCView = new AdobeDC.View({clientId: "8a65f1b3413e4fabaf92a4a49d313fcc", divId: "Mechurim_in"});
           adobeDCView.previewFile({
-            content:{location: {url: "https://towards-nomadic-urbanism.github.io/mapbox/images/Mechurim.pdf"}},
+            content:{location: {url: `https://towards-nomadic-urbanism.github.io/mapbox/images/Mechurim.pdf`}},
             metaData:{fileName: "פרטים גגון מכורים"}
           }, {embedMode: "SIZED_CONTAINER", showDownloadPDF: false, showPrintPDF: false});
         });
@@ -969,8 +934,9 @@
       // Global Controls
       var controls = [];
 
-      var language = '_en'; // Set language to '_en' for English or '' for Hebrew
+      //var language = '_en'; // Set language to '_en' for English or '' for Hebrew
       var controlsDir = language == '_en' ? 'left' : 'right';
+      console.log("***************************************************" + controlsDir);
       var flying = false;
       var formToOpen = "";
       var mapPopups = true;
