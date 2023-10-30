@@ -240,10 +240,10 @@
       else if (titleName == "תכנון") {
         planningOn = !planningOn;
         titles_text['main_title'][''] = 'פריסת מוקדים עירונית המאפשרת קיום חיים בסטטוס המעבר';
-        titles_text['main_title']['_en'] = 'An urban focal point layout that enables life in a transitory status';
+        titles_text['main_title']['_en'] = 'An urban layout providing responses for dignified transient living';
         secondaryTitle.style.display = 'none';
         titles_text['lower_text'][''] = 'התכנית העירונית פורסת רשת של מוקדים הפועלים יחד על מנת לאפשר קיום עירוני מגוון והבטחה של חיים בכבוד, גם ללא בית קבוע, ובעצם להיות בבית בעיר. הרשת מורכבת ממענה לצרכים בסיסיים ומאפשרת למשתמשים בה אפשרויות בחירה רבות.';
-        titles_text['lower_text']['_en'] = 'The urban plan lays out a network of centers that work together to enable a diverse urban existence and guarantee a life with dignity, even without a permanent home, and basically to be at home in the city. The network responds to basic needs and allows its users many choices.';
+        titles_text['lower_text']['_en'] = 'The urban plan lays out a network of responses, architectural interventions, that work together to enable a diverse urban existence and guarantee a life with dignity, even without a permanent home, and basically to be at home in the city. The interventions within the network respond to basic needs and allow its users many choices on their way.';
         var vis = true;
         if (!planningOn && !researchOn) {
           vis = false;
@@ -1854,11 +1854,11 @@
             else if (this.id == "תכנון") {
               planningOn = !planningOn;
               titles_text['main_title'][''] = 'פריסת מוקדים עירונית המאפשרת קיום חיים בסטטוס המעבר';
-              titles_text['main_title']['_en'] = 'An urban focal point layout that enables life in a transitory status';
+              titles_text['main_title']['_en'] = 'An urban layout providing responses for dignified transient living';
               // mainTitle.innerHTML = 'פריסת מוקדים עירונית המאפשרת קיום חיים בסטטוס המעבר';
               secondaryTitle.style.display = 'none';
               titles_text['lower_text'][''] = 'התכנית העירונית פורסת רשת של מוקדים הפועלים יחד על מנת לאפשר קיום עירוני מגוון והבטחה של חיים בכבוד, גם ללא בית קבוע, ובעצם להיות בבית בעיר. הרשת מורכבת ממענה לצרכים בסיסיים ומאפשרת למשתמשים בה אפשרויות בחירה רבות.';
-              titles_text['lower_text']['_en'] = 'The urban plan lays out a network of centers that work together to enable a diverse urban existence and guarantee a life with dignity, even without a permanent home, and basically to be at home in the city. The network responds to basic needs and allows its users many choices.';
+              titles_text['lower_text']['_en'] = 'The urban plan lays out a network of responses, architectural interventions, that work together to enable a diverse urban existence and guarantee a life with dignity, even without a permanent home, and basically to be at home in the city. The interventions within the network respond to basic needs and allow its users many choices on their way.';
               // lowerText.innerHTML = 'התכנית העירונית פורסת רשת של מוקדים הפועלים יחד על מנת לאפשר קיום עירוני מגוון והבטחה של חיים בכבוד, גם ללא בית קבוע, ובעצם להיות בבית בעיר. הרשת מורכבת ממענה לצרכים בסיסיים ומאפשרת למשתמשים בה אפשרויות בחירה רבות.';
               // instructionTitle.style.display = 'block';
               var vis = true;
@@ -2462,7 +2462,7 @@
 
         function infoHandler(event) {
           var infoText = document.getElementById('lower_text');
-          infoText.style.width = language == '_en' ? '420px' : '400px';
+          infoText.style.width = language == '_en' ? '430px' : '400px';
           var vis = infoText.style.display;
           vis = vis == 'none' ? 'block' : 'none';
           infoText.style.display = vis;
