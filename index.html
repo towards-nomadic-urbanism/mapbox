@@ -336,11 +336,11 @@
 
   </script>
   <div class="map-title">
-    <div id="main_title" style="text-align: center;">
+    <div id="main_title" style="text-align: center; display: none;">
       <h1 style="padding-top: 5px; padding-right: 8px; padding-left: 8px; text-align: center;">כלי לקריאה מחודשת של תל-אביב מעיניהם של דרי הרחוב</h1>
     </div>
   </div>
-  <div class="secondary-title-right" id="secondary_title">
+  <div class="secondary-title-right" id="secondary_title" style="display: none;">
     <p style="padding-right: 2px; padding-left: 2px;">לחץ על הנקודות הצהובות להכרת הסיפורים האישיים
       לחץ על הנקודות האדומות בכיכר דיזינגוף \ שוק הכרמל להעמקת מקטע אזורי</p>
   </div>
@@ -359,13 +359,11 @@
   </div>
   <body>
     <div id="map"></div>
-    <div class="map-overlay-left" id="accordion_container">
+    <div class="map-overlay-left" id="accordion_container" style="display: none;">
       <div class="accordion" id="accordion">
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingOne">
-            <button class="accordion-button" id="main_legend_button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" onclick='accordionClick()'>
-            מקרא
-            </button>
+            <button class="accordion-button" id="main_legend_button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" onclick='accordionClick()'>מקרא</button>
           </h2>
           <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne1">
             <div class="accordion" id="accordion1">
@@ -2173,6 +2171,10 @@
         }
         // Set map language to English
         setLanguage(true);
+        // Show titles and legend
+        document.getElementById("accordion_container").style.display = 'block';
+        document.getElementById("main_title").style.display = 'block';
+        document.getElementById("secondary_title").style.display = 'block';
 
         layers.push('3d-route');
         layers.push('24h-homeless-route');
