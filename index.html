@@ -1716,6 +1716,7 @@
             // Hide lower text
             document.getElementById('lower_text').children[0].innerHTML = titles_text['lower_text'][language];
             document.getElementById('lower_text').style.display = 'none';
+            document.getElementById('lower_text').style.width = language == '_en' ? '430px' : '400px';
             // Fly back up
             map.fire('flystart');
           }
@@ -2478,6 +2479,7 @@
           // addPopupToRoute();
 
           // Show lower text
+          document.getElementById('lower_text').style.width = 'fit-content';
           document.getElementById('lower_text').children[0].innerHTML = titles_text['lower_text']['route'];
           document.getElementById('lower_text').style.display = 'block';
         }
@@ -2925,6 +2927,9 @@
               var name = document.createElement('h3');
               var name_title = language == '_en' ? 'Name' : 'שם';
               var lang = language == '_en' ? language : '_he';
+              //if (lang == '_en' && !("name_en" in properties))
+              //  lang = '';
+              //console.log('LANG: ' + lang);
               name.innerHTML = name_title + '<br><b>' +
                                 properties["name" + lang] +
                                 '</b></br>';
@@ -2989,8 +2994,12 @@
             // console.log(prop);
             if (prop in formIdx) {
               
-              if (e.features[0].layer['id'] == 'sleeping-corners' || e.features[0].layer['id'] == 'formal') {
+              if (e.features[0].layer['id'] == 'sleeping-corners') {
                 updateTextDiv(forms[formIdx[prop]], e.features[0].properties);
+              }
+              else if (e.features[0].layer['id'] == 'formal') {
+                var lang = language == '_en' ? '' : '_he';
+                updateTextDiv(forms[formIdx[prop]], e.features[0].properties, e.features[0].properties['name' + lang]);
               }
               else if (prop == 'Pasta Basta') {
                 var text_to_update = language == '_en' ? 'Stall manager in the Carmel Market' : 'מנהל בסטה בשוק הכרמל';
